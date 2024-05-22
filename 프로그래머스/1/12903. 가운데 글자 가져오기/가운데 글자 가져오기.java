@@ -8,7 +8,5 @@ class Solution {
         else {
             return s.substring((s.length()/2)-1,s.length()/2+1);
         }
-        
-        // return answer;
     }
 }

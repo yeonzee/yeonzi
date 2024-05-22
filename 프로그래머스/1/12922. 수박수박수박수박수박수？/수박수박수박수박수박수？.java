@@ -1,9 +1,9 @@
-import java.util.*;
 class Solution {
     public String solution(int n) {
         String answer = "";
-        String [] a = new String[n];
-        for (int i=0;i<n;i++) {
+        String[] a = new String[n];
+        
+        for (int i = 0;i<n;i++) {
             if (i % 2 == 0) {
                 a[i] = "수";
             }
@@ -11,7 +11,7 @@ class Solution {
                 a[i] = "박";
             }
         }
-        answer = String.join("", a);
-        return answer;
+        
+        return String.join("",a);
     }
 }

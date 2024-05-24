@@ -15,6 +15,7 @@ public class Solution {
             }
         }
         
+        //거꾸로 쌓이는 거 주의!
         int[] answer = new int[stack.size()];
         for (int i =stack.size()-1;i>=0;i--) {
             answer[i] = stack.pop();

@@ -1,6 +1,7 @@
 class Solution {
     public String solution(String s) {
-        // 공백 기준으로 문자열 자르기(마지막에 오는 빈 문자열도 포함하도록)
+        // 공백 기준으로 문자열 자르기
+        // -1: 공백으로 끝나면 그것도 포함
         String[] strArr = s.split(" ", -1);
 
         for(int i=0; i < strArr.length; i++) {
@@ -20,6 +21,8 @@ class Solution {
             // 문자열로 합치기
             strArr[i] = String.join("", str);
         }
+        // 공백 포함해서 합치기
         return String.join(" ", strArr);
+        
     }
 }

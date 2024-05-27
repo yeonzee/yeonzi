@@ -2,19 +2,19 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] array, int[][] commands) {
         int[] answer = new int[commands.length];
-        int idx = 0;
+        int index = 0;
         
-        for (int[] command : commands) {
-            int i = command[0];
-            int j = command[1];
-            int k = command[2]; 
+        for (int a=0;a<commands.length;a++) {
+            int i = commands[a][0];
+            int j = commands[a][1];
+            int k = commands[a][2];
             
-            int[] subArray = Arrays.copyOfRange(array, i - 1, j);
+            //부분배열 만들기
+            int[] subArray = Arrays.copyOfRange(array,i-1,j);
             Arrays.sort(subArray);
-            answer[idx] = subArray[k-1];
-            idx++;
+            answer[index] = subArray[k-1];
+            index++;
         }
-        
         return answer;
     }
 }

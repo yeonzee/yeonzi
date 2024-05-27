@@ -13,6 +13,6 @@ class Solution {
             }
         }  
         answer = sb + "0";
-        return answer + sb.reverse();
+        return answer.toString() + sb.reverse().toString();
     }
 }

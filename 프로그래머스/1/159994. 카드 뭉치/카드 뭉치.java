@@ -1,4 +1,4 @@
-
+//cards1, cards2의 첫번째 값이랑 goal의 값들을 비교하여 해당하는 값이 있으면 원배열에서 제거
 import java.util.*;
 class Solution {
     public String solution(String[] cards1, String[] cards2, String[] goal) {

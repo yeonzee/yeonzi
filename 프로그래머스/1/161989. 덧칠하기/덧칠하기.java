@@ -1,23 +1,14 @@
-//빈곳을 false
-//false인 부분들을 m개씩 채워주기
-import java.util.*;
+//다른 사람 풀이
 class Solution {
     public int solution(int n, int m, int[] section) {
-        int answer = 0;
-        boolean[] a = new boolean[n+1];
-        Arrays.fill(a,true);
-    
-        for (int num:section) {
-            a[num] = false;
-        }
-        
-        int count = 0;
-        for (int i=1;i<=n;i++) {
-            if(!a[i]) {
-                count++;
-                i += m-1;
+        int roller = section[0];
+        int cnt = 1;
+        for(int i = 1; i < section.length; i++) {
+            if(roller + m - 1 < section[i]) {
+                cnt++;
+                roller = section[i];
             }
         }
-        return count;
+        return cnt;
     }
 }

@@ -1,20 +1,16 @@
 import java.util.*;
-
 class Solution {
     public int[] solution(String[] keymap, String[] targets) {
         int[] answer = new int[targets.length];
         HashMap<Character, Integer> map = new HashMap<>();
-        
-        // keymap 위 모든 알파벳의 최소 클릭 수 구하기
-        for(int i=0;i<keymap.length;i++){
-            
-            // 최소 클릭수로 덮어씌우기 위해 문자열 끝부터 시작
-            for(int j=0;j<keymap[i].length();j++){
-                
+        //각 단어의 최소값 저장
+        for (int i=0;i<keymap.length;i++) {
+            for (int j=0;j<keymap[i].length();j++) {
+                //더 작은 값이 있을 경우
                 if (map.containsKey(keymap[i].charAt(j))) {
-                    // 최소 클릭 수가 뒤에 나왔을 때 갱신
-                    Integer nCurrCnt = map.get(keymap[i].charAt(j));
-                    if (nCurrCnt > (j+1)) {
+                    int current_cnt = map.get(keymap[i].charAt(j));
+                    //더 작은 값을 넣어준다
+                    if (current_cnt > j+1) {
                         map.put(keymap[i].charAt(j),j+1);
                     }
                 }
@@ -23,23 +19,22 @@ class Solution {
                 }
             }
         }
-        System.out.println(map);
-        // 모든 targets 단어에 대해 반복
-        for(int i=0;i<targets.length;i++){
-            int nCnt = 0;
-            for(int j=0;j<targets[i].length();j++){
-                char alpha = (targets[i].charAt(j));
-                Integer nMinClick = map.get(alpha);
-                if ( nMinClick != null ) {
-                    nCnt += nMinClick;
+        
+        for (int k=0;k<targets.length;k++) {
+            int sum = 0;
+            for (int a=0;a<targets[k].length();a++) {
+                char alpha = targets[k].charAt(a);
+                Integer min_click = map.get(alpha);
+                
+                if (min_click != null) {
+                    sum += min_click;
                 }
-                else{
-                    nCnt = -1;  // i번째 단어는 작성할 수 없음
+                else {
+                    sum = -1;
                     break;
                 }
             }
-            answer[i] = nCnt;
-            
+            answer[k] = sum;
         }
         return answer;
     }

@@ -23,6 +23,7 @@ class Solution {
         for (int k=0;k<targets.length;k++) {
             int sum = 0;
             for (int a=0;a<targets[k].length();a++) {
+                //targets에 있는 단어와 map에서 있는 단어 일치하는지 확인
                 char alpha = targets[k].charAt(a);
                 Integer min_click = map.get(alpha);
                 

@@ -1,17 +1,18 @@
+//스트림 사용
 import java.util.*;
-
 class Solution {
     public int[][] solution(int[][] data, String ext, int val_ext, String sort_by) {
+        int[][] answer = {};
+        HashMap<String, Integer> map = new HashMap<>();
         
-        Map<String, Integer> colOrder = new HashMap<>();
-        colOrder.put("code", 0);
-        colOrder.put("date", 1);
-        colOrder.put("maximum", 2);
-        colOrder.put("remain", 3);
+        map.put("code",0);
+        map.put("date",1);
+        map.put("maximum",2);
+        map.put("remain",3);
         
-        int[][] filteredData = Arrays.stream(data).filter(x -> x[colOrder.get(ext)] < val_ext).toArray(int[][]::new);
-        Arrays.sort(filteredData, (o1, o2) ->  o1[colOrder.get(sort_by)] - o2[colOrder.get(sort_by)]);
-
-        return filteredData;
+        int[][] filterdata = Arrays.stream(data).filter(x -> x[map.get(ext)] < val_ext).toArray(int[][]::new);
+        Arrays.sort(filterdata, (o1, o2) -> o1[map.get(sort_by)] - o2[map.get(sort_by)]);
+        
+        return filterdata;
     }
 }

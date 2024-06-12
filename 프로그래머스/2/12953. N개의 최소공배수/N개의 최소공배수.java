@@ -23,7 +23,7 @@ class Solution {
     }
 
     //최대 공약수
-    private static int gcd(int a, int b) {
+    public static int gcd(int a, int b) {
         int r = a % b;
         if(r == 0) return b;
         else return gcd(b, r);

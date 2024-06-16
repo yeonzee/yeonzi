@@ -1,23 +1,15 @@
 import java.util.*;
-
 class Solution {
     public int solution(int[] citations) {
+        int answer = 0;
         Arrays.sort(citations);
-        
-        int n = citations.length;
-        
-        // 모든 요소가 0인 경우 처리
-        if (citations[n - 1] == 0) {
-            return 0;
+
+        for (int i = citations.length -1 ; i >= 0 ; i--) {
+            if(citations.length -i >= citations[i])
+                break;
+            answer++;
         }
-        
-        for (int i = 0; i < n; i++) {
-            int hIndex = n - i;
-            if (citations[i] >= hIndex) {
-                return hIndex;
-            }
-        }
-        
-        return 0;
+        System.out.println(answer);
+        return answer;
     }
 }

@@ -1,61 +1,63 @@
 import java.util.*;
-
 class Solution {
     public int solution(String dirs) {
         int answer = 0;
-        HashSet<String> s = new HashSet<String>();  //중복확인 위해 사용하는 set
+        //중복을 없애기 위해 set 사용
+        HashSet<String> set = new HashSet<>();
         
-        int len = dirs.length();
         
-        int nowX = 0;
-        int nowY = 0;
+        //현재 값 초기화 (0,0)
+        int nowx = 0;
+        int nowy = 0;
         
-        for(int i=0; i<len; i++){
-            int nextX = nowX;
-            int nextY = nowY;
-            String road = "";       //경로 저장할 문자열
-            // U : "현재 좌표"+"이동 후 좌표"
-            if(dirs.charAt(i) == 'U'){
-                nextY++;
-                road += nowX;
-                road += nowY;
-                road += nextX;
-                road += nextY;
-            }
-            // D :  "이동 후 좌표" + "현재 좌표"
-            else if(dirs.charAt(i) == 'D'){
-                nextY--;
-                road += nextX;
-                road += nextY;
-                road += nowX;
-                road += nowY;
-            }
-            // R : "현재 좌표"+"이동 후 좌표"
-            else if(dirs.charAt(i) == 'R'){
-                nextX++;
-                road += nowX;
-                road += nowY;
-                road += nextX;
-                road += nextY;
-            }
-            // L :  "이동 후 좌표" + "현재 좌표"
-            else if(dirs.charAt(i) == 'L'){
-                nextX--;
-                road += nextX;
-                road += nextY;
-                road += nowX;
-                road += nowY;
+        for(int i=0;i<dirs.length();i++) {
+            int nextx = nowx;
+            int nexty = nowy;
+            String road = "";
+            if(dirs.charAt(i) == 'U') {
+                nexty++;
+                road += nowx;
+                road += nowy;
+                road += nextx;
+                road += nexty;
             }
             
-            //범위 벗어나면 무시
-            if(nextX < -5 || nextY < -5 || nextX > 5 || nextY > 5)
+            //U,D일 경우 road에 반대로 저장하는 이유: 되돌아 가는 경우도 같은 경로로 치기 위해
+            else if(dirs.charAt(i) == 'D') {
+                nexty--;
+                road += nextx;
+                road += nexty;
+                road += nowx;
+                road += nowy;
+            }
+            
+            else if(dirs.charAt(i) == 'R') {
+                nextx++;
+                road += nowx;
+                road += nowy;
+                road += nextx;
+                road += nexty;
+            }
+            
+            else if(dirs.charAt(i) == 'L') {
+                nextx--;
+                road += nextx;
+                road += nexty;
+                road += nowx;
+                road += nowy;
+            }
+            
+            //범위를 벗어나면 set에 저장하지 않는다
+            if (nextx > 5 || nextx < -5 || nexty > 5 || nexty < -5) {
                 continue;
+            }
             
-            s.add(road);
-            nowX = nextX;
-            nowY = nextY;
+            set.add(road);
+            
+            nowx = nextx;
+            nowy = nexty;
         }
-        answer = s.size();
-        return answer;
+        
+        return set.size();
     }
 }

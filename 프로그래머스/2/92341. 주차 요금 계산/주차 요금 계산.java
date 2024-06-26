@@ -1,63 +1,67 @@
-//map에다 저장
+/*
+입차 map을 통해 IN이라면 차량 번호, 입차 시간을 정의하고
+OUT이면 출차시간 - 입차시간하여 total의 벨류로 초기화하고, 해당 map의 키벨류를 비운다.
+만약 출차가 안찍혀 있다면 입차 map은 비워져있지 않을 것이고 23:59분을 시간 계산하여 위와 같이 계산해준다.
+*/
 import java.util.*;
 
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        int[] answer = {};
+        int[] answer;
+        Map<String, Integer> inMap = new HashMap<>();
+        Map<String, Integer> totalTimeMap = new HashMap<>();
         
-        Map<String, String> map = new HashMap<>();
-        Map<String, Integer> feeMap = new HashMap<>();
+        int baseTime = fees[0];
+        int baseFee = fees[1];
+        int partTime = fees[2];
+        int partFee = fees[3];
         
-        for(int i = 0; i < records.length; i++){
-            feeMap.put(records[i].split(" ")[1], 0); //차량번호
-        }
-        
-        for(int i = 0; i < records.length; i++){
-            String[] infos = records[i].split(" ");
+        for (String record : records) {
+            String[] tmp = record.split(" ");
+            int time = getRealTime(tmp[0]);
+            String car = tmp[1];
+            String io = tmp[2];
             
-            if(map.containsKey(infos[1])){
-                String[] inTime = map.remove(infos[1]).split(":");
-                String[] outTime = infos[0].split(":");
-                
-                int hour = Integer.parseInt(outTime[0]) - Integer.parseInt(inTime[0]);
-                int minute = Integer.parseInt(outTime[1]) - Integer.parseInt(inTime[1]);
-                
-                //여러번 입차,출차할 경우가 있어 feeMap.get(infos[1])를 시간 계산하는 곳에 더해줘야 함
-                feeMap.replace(infos[1], feeMap.get(infos[1]) + 60 * hour + minute);
-                
-            }else{
-                map.put(infos[1], infos[0]); // 차 번호, 시간
+            if (io.equals("IN")) {
+                inMap.put(car, time);
+            } else {
+                int inTime = inMap.get(car);
+                inMap.remove(car);
+                int parkedTime = time - inTime;
+                totalTimeMap.put(car, totalTimeMap.getOrDefault(car, 0) + parkedTime);
             }
         }
-        
-        for(String key : map.keySet()){
-            String[] inTime = map.get(key).split(":");
-            
-            int hour = 23 - Integer.parseInt(inTime[0]);
-            int minute = 59 -Integer.parseInt(inTime[1]);
-            
-            feeMap.replace(key, feeMap.get(key) + 60 * hour + minute);
-        }
-        
-        //차량번호순으로 정렬하여 set로 만든 후 list로 반환
-        List<Map.Entry<String, Integer>> list = new ArrayList(feeMap.entrySet());
-        Collections.sort(list, (o1, o2) -> {
-            return Integer.parseInt(o1.getKey()) > Integer.parseInt(o2.getKey())?1 : 
-            Integer.parseInt(o1.getKey()) < Integer.parseInt(o2.getKey())?-1 : 0;
-        });
-        
 
-        answer = new int[list.size()];
-        
-        for(int i = 0; i < answer.length; i++){
-            //시간을 초과하였을 경우
-            if(list.get(i).getValue() > fees[0]){
-                answer[i] = fees[1] + (int) Math.ceil((list.get(i).getValue() - fees[0]) / (double)fees[2]) * fees[3];
-            }else{
-                answer[i] = fees[1];
+        // 입차만 하고 출차하지 않은 차량 처리
+        int lastTime = 1439;
+        for (String car : inMap.keySet()) {
+            int inTime = inMap.get(car);
+            int parkedTime = lastTime - inTime;
+            totalTimeMap.put(car, totalTimeMap.getOrDefault(car, 0) + parkedTime);
+        }
+
+        // 차량 번호를 정렬하여 처리
+        Object[] sortKey = totalTimeMap.keySet().toArray();
+        Arrays.sort(sortKey);
+        answer = new int[sortKey.length];
+
+        for (int i = 0; i < answer.length; i++) {
+            String car = (String) sortKey[i];
+            int totalTime = totalTimeMap.get(car);
+            int result = baseFee;
+            if (totalTime > baseTime) {
+                result += Math.ceil((double)(totalTime - baseTime) / partTime) * partFee;
             }
+            answer[i] = result;
         }
         
         return answer;
+    }
+    
+    public int getRealTime(String time) {
+        String[] tmp = time.split(":");
+        int hour = Integer.parseInt(tmp[0]) * 60;
+        int minute = Integer.parseInt(tmp[1]);
+        return hour + minute;
     }
 }

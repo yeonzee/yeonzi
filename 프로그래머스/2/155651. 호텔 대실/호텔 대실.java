@@ -15,26 +15,21 @@ class Solution {
             
         }
         
-        //시작 시간을 기준으로 오름차순 정렬
-        Arrays.sort(arr, new Comparator<int[]>() {
-            public int compare(int[] o1, int[] o2) {
-                // 첫 번째 열을 기준으로 오름차순 정렬
-                return Integer.compare(o1[0], o2[0]);
-            }
-        });
+        //시작시간을 기준으로 오름차순 정렬
+        Arrays.sort(arr, (o1, o2) -> (o1[0] == o2[0] ? o1[1] - o2[1] : o1[0] - o2[0]));
         
-        ArrayList<Integer> endTimes = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++) {
+        ArrayList<Integer> endTime = new ArrayList<>();
+        for(int i=0;i<arr.length;i++) {
             boolean allocated = false;
-            for (int j = 0; j < endTimes.size(); j++) {
-                if (endTimes.get(j) <= arr[i][0]) {
-                    endTimes.set(j, arr[i][1]);
+            for(int j=0;j<endTime.size();j++) {
+                if(endTime.get(j) <= arr[i][0]) {
+                    endTime.set(j,arr[i][1]);
                     allocated = true;
                     break;
                 }
             }
-            if (!allocated) {
-                endTimes.add(arr[i][1]);
+            if(!allocated) {
+                endTime.add(arr[i][1]);
                 answer++;
             }
         }

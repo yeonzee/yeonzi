@@ -4,7 +4,7 @@ class Solution {
     public String solution(String m, String[] musicinfos) {
         String answer = "(None)";
         ArrayList<String> answerList = new ArrayList<>();
-        int maxDuration = -1; 
+        int maxDuration = 0; 
         
         for(String str:musicinfos) {
             String[] music = str.split(",");
@@ -23,6 +23,7 @@ class Solution {
             // 곡
             String melody = music[3];
             
+            //테케 34번에 B#이 있어서 추가함
             // '#' 문자가 포함된 경우 변환 처리
             String modifiedMelody = melody.replaceAll("A#", "a")
                                     .replaceAll("C#", "c")
@@ -55,7 +56,7 @@ class Solution {
                 } 
                 else if (time == maxDuration) {
                 // 재생 시간이 같은 경우 먼저 입력된 음악을 선택
-                    if (answer.equals("None") || answer.compareTo(music[2]) > 0) {
+                    if (answer.equals("None")) {
                         answer = music[2];
                     }
                 }

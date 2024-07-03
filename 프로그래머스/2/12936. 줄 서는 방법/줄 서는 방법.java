@@ -1,33 +1,28 @@
+//팩토리얼 
 import java.util.*;
-
 class Solution {
     public int[] solution(int n, long k) {
-        List<Integer> numbers = new ArrayList<>();
-        for (int i = 1; i <= n; i++) {
-            numbers.add(i);
-        }
-        
         int[] answer = new int[n];
-        k--;  // 0-based 인덱싱을 위해 k를 감소
+        ArrayList<Integer> list = new ArrayList<>();
         
-        long factorial = 1;
-        for (int i = 2; i < n; i++) {
-            factorial *= i;
+        long f = 1;
+        for(int i=1;i<=n;i++) {
+            list.add(i);
+            f *= i;
         }
         
-        int index = 0;
-        while (n > 0) {
-            int selected = (int) (k / factorial);
-            answer[index++] = numbers.get(selected);
-            numbers.remove(selected);
-            
-            k %= factorial;
-            if (n > 1) {
-                factorial /= (n - 1);
-            }
-            n--;
+        //인덱스가 0부터 시작하기 때문에 k--;
+        k--;
+        int idx = 0;
+        while(idx < n) {
+            //순열 조합 몇개인지
+            f /= n-idx;
+            //몇번째 그룹인지
+            answer[idx] = list.remove((int) (k/f));
+            //새로운 k 갱신
+            k %= f;
+            idx++;
         }
-        
         return answer;
     }
 }

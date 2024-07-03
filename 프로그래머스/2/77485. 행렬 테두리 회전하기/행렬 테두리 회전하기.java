@@ -1,69 +1,67 @@
 import java.util.*;
 class Solution {
-    public int[][] map;
-    public ArrayList<Integer> answer;
+    static int[][] map;
     public int[] solution(int rows, int columns, int[][] queries) {
-        answer = new ArrayList<Integer>();
-        int[] result = new int[queries.length];
-        // 맵 초기화
+        int[] answer = new int[queries.length];
+        //2차원 배열 만들기
         map = new int[rows+1][columns+1];
-        int num = 1;
-        for(int i = 1; i <= rows; i++){
-            for(int j = 1; j <= columns; j++){
+        int num=1;
+        for(int i=1;i<=rows;i++) {
+            for(int j=1;j<=columns;j++) {
                 map[i][j] = num;
                 num++;
-            }  
-            
-        }
-        for(int i = 0; i < queries.length; i++){
-            answer.add(rotate(queries[i]));   
+            }
         }
         
-        for(int i=0;i<answer.size();i++) {
-            result[i] = answer.get(i);
+        int idx=0;
+        for(int[] query:queries) {
+            answer[idx] = rotate(query);
+            idx++;
         }
-        
-        return result;
+        return answer;
     }
     
-    public int rotate(int[] query){
-        int sX = query[0];
-        int sY = query[1];
-        int eX = query[2];
-        int eY = query[3];
+    public int rotate(int[] query) {
+        int sx = query[0];
+        int sy = query[1];
+        int ex = query[2];
+        int ey = query[3];
         
-        // 블록 한 개는 겹치므로 마지막 턴에서 갱신하도록 제외
-        int prev = map[sX][sY];
+        //블록 합개는 겹치므로 미리 저장해놓기
+        int prev = map[sx][sy];
         int min = prev;
-        // 오른쪽으로~
-        for(int i = sY+1; i <= eY; i++){
-            int temp = map[sX][i];
-            map[sX][i] = prev;
+        
+        //오른쪽
+        for(int i=sy+1;i<=ey;i++) {
+            int temp = map[sx][i];
+            map[sx][i] = prev;
             min = Math.min(prev, min);
             prev = temp;
         }
-        // 아래로~
-        for(int i = sX+1; i <= eX; i++){
-            int temp = map[i][eY];
-            map[i][eY] = prev;
+        
+        //아래
+        for(int i=sx+1;i<=ex;i++) {
+            int temp = map[i][ey];
+            map[i][ey] = prev;
             min = Math.min(prev, min);
             prev = temp;
         }
-        // 왼쪽으로~
-        for(int i = eY-1; i >= sY; i--){
-            int temp = map[eX][i];
-            map[eX][i] = prev;
+        
+        //왼쪽
+        for(int i=ey-1;i>=sy;i--) {
+            int temp = map[ex][i];
+            map[ex][i] = prev;
             min = Math.min(prev, min);
             prev = temp;
         }
-        // 위로~
-        for(int i = eX-1; i >= sX; i--){
-            int temp = map[i][sY];
-            map[i][sY] = prev;
+        
+        //위
+        for(int i=ex-1;i>=sx;i--) {
+            int temp = map[i][sy];
+            map[i][sy] = prev;
             min = Math.min(prev, min);
             prev = temp;
         }
-     
         return min;
     }
 }

@@ -1,81 +1,75 @@
 import java.util.*;
+
 class Solution {
+    int[] X = {1, 0, -1, 0};
+    int[] Y = {0, 1, 0, -1};
+
     public int solution(String[] board) {
-        int answer = Integer.MAX_VALUE;
-        boolean[][] visit = new boolean[board.length][board[0].length()];
-        Queue<int[]> que = new LinkedList<>();
+        int answer = 0;
+        char[][] bd = new char[board.length][board[0].length()];
+        int[] start = new int[2];
         
-        for(int i = 0; i<board.length; i++){
-            for(int j = 0; j<board[i].length(); j++){
-                if(board[i].charAt(j) == 'R') {
-                    que.add(new int[] {i,j,0});
-                    visit[i][j] = true;
-                    while(!que.isEmpty()){
-                        int[] tmp = que.poll();
-                        
-                        if(board[tmp[0]].charAt(tmp[1]) == 'G') {
-                            answer = Math.min(answer, tmp[2]);
-                        }
-                        
-                        for(int k = 0; k<4; k++){
-                            int[] XY = move(k, tmp[0] , tmp[1], tmp[2], board);
-                            int x = XY[0];
-                            int y = XY[1];
-                            
-                            if(!visit[x][y]){
-                                que.add(XY);
-                                visit[x][y] = true;
-                            }
-                        }
+            for(int i=0; i<board.length; i++) {
+                for(int j=0; j<board[0].length(); j++) {
+                    bd[i][j] = board[i].charAt(j);
+                    if(board[i].charAt(j) == 'R') {
+                        start[0] = i;
+                        start[1] = j;
                     }
                 }
             }
-        }
-        
-        return answer == Integer.MAX_VALUE ? -1 : answer;
+        return bfs(bd, "G", start);
     }
-    
-    // 상하좌우 장애물이나 맨 끝에 부딪힐때까지 미끄러지기
-    public int[] move(int k, int x, int y, int cnt, String[] board){
-        int[] result = new int[3];
-        if(k == 0){
-            for(int i = x; i>=0; i--){
-                if(board[i].charAt(y) == 'D'){
-                    return new int[]{i+1, y, cnt+1};
-                }
-            }            
-            result[0] = 0;
-            result[1] = y;
-            result[2] = cnt+1;
-        }else if(k == 1){
-            for(int i = x; i<board.length; i++){
-                if(board[i].charAt(y) == 'D'){
-                    return new int[]{i-1, y, cnt+1};
-                }
-            }            
-            result[0] = board.length - 1;
-            result[1] = y;
-            result[2] = cnt+1;
-        }else if(k == 2){
-            for(int i = y; i<board[0].length(); i++){
-                if(board[x].charAt(i) == 'D'){
-                    return new int[]{x, i-1, cnt+1};
-                }
-            }            
-            result[0] = x;
-            result[1] = board[0].length()-1;
-            result[2] = cnt+1;
-        }else if(k == 3){
-            for(int i = y; i>=0; i--){
-                if(board[x].charAt(i) == 'D'){
-                    return new int[]{x, i+1, cnt+1};
-                }
-            }            
-            result[0] = x;
-            result[1] = 0;
-            result[2] = cnt+1;
-        }
-        
-        return result;
+
+    public int bfs(char[][] bd, String target, int[] start) {
+        Queue<int[]> queue = new LinkedList<>();
+        int[][] visited = new int[bd.length][bd[0].length];
+        visited[start[0]][start[1]] = 1;        
+        queue.add(start);
+        int cnt = 0;
+
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            cnt++;
+
+            while(size > 0) {
+                int[] temp = queue.poll();
+                int x = temp[0];
+                int y = temp[1];
+
+                for(int i = 0; i < 4; i++) {
+                    int idx = 1;
+                    while(true) {
+                        int x2 = x + X[i] * idx;
+                        int y2 = y + Y[i] * idx;
+
+                        if(x2 < 0 || x2 >= bd.length || y2 < 0 || y2 >= bd[0].length || bd[x2][y2]=='D') {
+                            int x3 = x2 - X[i];
+                            int y3 = y2 - Y[i];
+
+                            if(visited[x3][y3] == 1) {
+                                break;
+                            }
+
+                            if(bd[x3][y3] == 'G') {
+                                return cnt;
+                            }
+
+                            queue.add(new int[] {x3, y3});
+                            visited[x3][y3] = 1;
+                            break;
+                        }                      
+
+                        idx++;
+                    }
+                }                
+
+                size--;
+            }
+        }        
+
+        return -1;
     }
+
+
 }

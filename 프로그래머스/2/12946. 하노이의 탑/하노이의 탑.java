@@ -5,8 +5,14 @@ class Solution {
 
     public int[][] solution(int n) {
         move(n, 1, 2, 3);
-        int[][] answer = arr.stream()
-                .toArray(int[][]::new);
+        // int[][] answer = arr.stream()
+        //         .toArray(int[][]::new);
+
+        int[][] answer = new int[arr.size()][];
+        for (int i = 0; i < arr.size(); i++) {
+            answer[i] = arr.get(i);
+        }
+        
         return answer;
     }
 

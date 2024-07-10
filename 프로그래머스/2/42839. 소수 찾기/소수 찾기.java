@@ -1,47 +1,52 @@
+//모든 조합 만들기(중복을 피하기 위해 set사용)
+//소수인지 확인
 import java.util.*;
 class Solution {
-    static HashSet<Integer> hashset = new HashSet<Integer>();
-    static boolean[] visited = new boolean[7];
+    static HashSet<Integer> set = new HashSet<>();
+    
     public int solution(String numbers) {
         int answer = 0;
         
-        dfs(numbers, "", 0);
+        recursive("",numbers);
         
-        // 중복이 제거된 숫자에서 소수가 있다면 answer++
-        for (Integer num : hashset) {
-            if (isPrime(num)) {
+        for(int num:set) {
+            if(isboolean(num)) {
+                //소수임
                 answer++;
             }
         }
         
+        
         return answer;
     }
-   
-    public static void dfs(String numbers, String s, int depth) {
-    	// depth가 numbers.lnegth()보다 크다면 return 한다.
-        if (depth > numbers.length()){
-            return;
+    
+    //모든 조합 중복없이 set에 저장
+    public void recursive(String s, String others) {
+        if(!s.equals("")) {
+            set.add(Integer.valueOf(s));
         }
         
-        for(int i = 0; i < numbers.length(); i++) {
-            if(!visited[i]) { 
-                // 사용된 종이 조각은 방문 처리
-                visited[i] = true;
-                hashset.add(Integer.parseInt(s + numbers.charAt(i)));
-                dfs(numbers, s + numbers.charAt(i), depth + 1);
-                visited[i] = false;
-            }
+        //재귀
+        for(int i=0; i<others.length(); i++) {
+            recursive(s+others.charAt(i),others.substring(0,i)+others.substring(i+1));
         }
+        
     }
-                                            
-    public boolean isPrime(int num) {
-        System.out.println(num);
-        // 소수는 0과 1보다 커야 한다.
-        if(num == 0 || num == 1) return false;
-        // 에라토스테네스의 체
-        for(int i=2; i <= Math.sqrt(num); i++) {
-            if(num%i==0)return false;
+    
+    //소수인지 확인
+    public boolean isboolean(int num) {
+        if (num==0 || num == 1) {
+            return false;
+        }
+        else {
+            for(int i=2; i<=(int)Math.sqrt(num); i++) {
+                //소수아님
+                if(num % i == 0) {
+                    return false;
+                }
+            }
         }
         return true;
     }
+    
 }

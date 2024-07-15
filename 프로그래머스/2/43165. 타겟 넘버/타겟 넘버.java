@@ -1,20 +1,35 @@
+import java.util.*;
 class Solution {
     public int solution(int[] numbers, int target) {
-        return dfs(numbers, target, 0, 0);
+        int answer = 0;
+        
+        return dfs(0,target,numbers,0);
+        
     }
-
-    private int dfs(int[] numbers, int target, int depth, int sum) {
-        int matchCount = 0;
-
-        if (depth == numbers.length) {
-            if (sum == target) {
+    
+    public int dfs(int depth, int target, int[] numbers, int sum) {
+        
+        int count = 0;
+            
+        //한 줄기 탐색 끝
+        if(depth == numbers.length) {
+            //탐색 후 더한 값이 target과 같다면
+            if(sum == target) {
                 return 1;
             }
-            return 0;
+            else {
+                return 0;
+            }
         }
 
-        matchCount += dfs(numbers, target, depth + 1, sum + numbers[depth]);
-        matchCount += dfs(numbers, target, depth + 1, sum - numbers[depth]);
-        return matchCount;
+        //값을 더하는 경우
+        count += dfs(depth+1, target, numbers, sum+numbers[depth]);
+
+        //값을 빼는 경우
+        count += dfs(depth+1, target, numbers, sum-numbers[depth]);
+
+        return count;
+
+        
     }
 }

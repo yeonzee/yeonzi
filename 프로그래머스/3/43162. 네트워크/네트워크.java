@@ -1,26 +1,31 @@
 import java.util.*;
-
 class Solution {
     public int solution(int n, int[][] computers) {
-        boolean[] visited = new boolean[n];
         int answer = 0;
+        boolean[] visited = new boolean[n];
         
-        for (int i = 0; i < n; i++) {
-            if (!visited[i]) {
-                dfs(computers, visited, i);
+        //노드 순회
+        for(int i=0; i<n; i++) {
+            //아직 방문하지 않은 노드만
+            if(!visited[i]) {
+                //dfs
+                dfs(computers, i, visited);
+                //dfs가 돌고 return되면 네트워크 하나 생성되었다는 뜻
                 answer++;
             }
         }
-        
         return answer;
     }
     
-    private void dfs(int[][] computers, boolean[] visited, int node) {
+    public void dfs(int[][] computers, int node, boolean[] visited) {
+        //시작하므로 방문 처리
         visited[node] = true;
         
-        for (int i = 0; i < computers.length; i++) {
-            if (computers[node][i] == 1 && !visited[i]) {
-                dfs(computers, visited, i);
+        for(int j=0; j<computers.length; j++) {
+            //연결되어있고, 아직 방문하지 않았다면
+            if(computers[node][j] == 1 && !visited[j]){
+                //j를 node로 변경하여 재귀호출
+                dfs(computers, j, visited);
             }
         }
     }

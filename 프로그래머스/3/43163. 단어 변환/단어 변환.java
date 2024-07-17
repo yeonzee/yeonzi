@@ -1,35 +1,42 @@
+//dfs 풀이
+import java.util.*;
 class Solution {
+    static int answer;
     static boolean[] visited;
-    static int answer = 0;
-    
     public int solution(String begin, String target, String[] words) {
+        answer = 0;
         visited = new boolean[words.length];
-
-        dfs(begin, target, words, 0);
+        dfs(0,begin,target,words);
         return answer;
     }
     
-    public static void dfs(String begin, String target, String[] words, int cnt) {
-        if (begin.equals(target)) {
+    public void dfs(int cnt, String begin, String target, String[] words) {
+        
+        
+        //종료조건
+        if(begin.equals(target)) {
             answer = cnt;
             return;
         }
-
-        for (int i = 0; i < words.length; i++) {
-            if (visited[i]) {
+        
+        for(int i=0; i<words.length; i++) {
+            //이미 방문한 곳이라면 안간다
+            if(visited[i]) {
                 continue;
             }
-
-            int k = 0;    // 같지않은 스펠링 몇개인지 세기
-            for (int j = 0; j < begin.length(); j++) {
-                if (begin.charAt(j) != words[i].charAt(j)) {
+        
+            int k=0;
+            //한글자만 다를 경우
+            for(int j=0;j<begin.length();j++) {
+                if(begin.charAt(j) != words[i].charAt(j)) {
                     k++;
                 }
             }
-
-            if (k == 1) {  // 같지 않은 스펠링이 1개일 때
+            
+            //k가 1인 경우(바꾸는 경우)
+            if(k==1) {
                 visited[i] = true;
-                dfs(words[i], target, words, cnt + 1);
+                dfs(cnt+1,words[i],target,words);
                 visited[i] = false;
             }
         }

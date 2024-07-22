@@ -1,3 +1,4 @@
+
 import java.util.*;
 class Solution {
     public int[] solution(int brown, int yellow) {
@@ -7,6 +8,7 @@ class Solution {
                 if(i*j == yellow && (i*2 + j*2)+4 == brown) {
                     answer[0] = i+2;
                     answer[1] = j+2;
+                    break;
                 }
             }
         }

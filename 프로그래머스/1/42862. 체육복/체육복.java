@@ -1,40 +1,41 @@
+//틀린 이유: 여벌 체육복을 가져온 학생이 체육복을 도난당했을 경우 남은 체육복이 하나이기에 다른 학생에게 못빌려줌
+//이걸 생각 못해서 틀림 젠장
 import java.util.*;
-
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
-        // 정렬
+        int answer = 0;
         Arrays.sort(lost);
         Arrays.sort(reserve);
-
-        // 여벌 체육복을 가진 학생을 ArrayList에 저장
-        ArrayList<Integer> r = new ArrayList<>();
-        for (int i : reserve) {
-            r.add(i);
+        
+        boolean[] checkI = new boolean[lost.length];
+        boolean[] checkJ = new boolean[reserve.length];
+        
+        int count = 0;
+        
+        //여벌 체육복이 있는 학생인데 도난당했을 경우 먼저 계산
+        for(int i=0; i<lost.length; i++) {
+            for(int j=0; j<reserve.length; j++) {
+                if((lost[i]==reserve[j]) && !checkJ[j] && !checkI[i]) {
+                    checkI[i] = true;
+                    checkJ[j] = true;
+                    count++;
+                }
+            }
         }
-
-        // 여벌 체육복을 가진 학생이 도난당한 경우 먼저 처리
-        int cnt = 0;
-        ArrayList<Integer> newLost = new ArrayList<>();
-        for (int j : lost) {
-            if (r.contains(j)) {
-                r.remove(Integer.valueOf(j));
-                cnt++;
-            } else {
-                newLost.add(j);
+        
+        //나머지 계산
+        for(int i=0; i<lost.length; i++) {
+            for(int j=0; j<reserve.length; j++) {
+                //앞뒤에서 빌려주기
+                if((lost[i] - 1 == reserve[j] || lost[i] + 1 == reserve[j]) && !checkJ[j] && !checkI[i]) {
+                    checkI[i] = true;
+                    checkJ[j] = true;
+                    count++;
+                }
             }
         }
 
-        // 도난당한 학생에게 체육복 빌려주기
-        for (int j : newLost) {
-            if (r.contains(j - 1)) {
-                r.remove(Integer.valueOf(j - 1));
-                cnt++;
-            } else if (r.contains(j + 1)) {
-                r.remove(Integer.valueOf(j + 1));
-                cnt++;
-            }
-        }
-
-        return n - lost.length + cnt;
+        answer = n - (lost.length-count);
+        return answer;
     }
 }

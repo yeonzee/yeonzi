@@ -13,9 +13,9 @@ class Solution {
     }
     
     public void dfs(int depth, int k, int[][] dungeons) {
-        // if(dungeons.length == depth) {
-        //     return;
-        // }
+        if(dungeons.length == answer) {
+            return;
+        }
         
         for(int i=0; i<dungeons.length; i++) {
             //k보다 작고 방문하지 않았다면 탐방 가능

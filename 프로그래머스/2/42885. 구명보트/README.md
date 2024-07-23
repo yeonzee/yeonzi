@@ -1,10 +1,10 @@
 # [level 2] 구명보트 - 42885 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42885) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42885#qna) 
 
 ### 성능 요약
 
-메모리: 53.9 MB, 시간: 7.93 ms
+메모리: 54 MB, 시간: 11.51 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 06월 12일 00:05:44
+2024년 07월 23일 22:41:41
 
 ### 문제 설명
 

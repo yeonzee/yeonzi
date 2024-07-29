@@ -1,58 +1,64 @@
+//N이 i개가 있는 통을 담을 list만들기 ex) N이 5일 때 5,55,555....
+//i가 3일때 i가1인통 (+-/*) i가 2인통 하면 됨 ex) 555, 5-55, 5*55
+//+,-같은 경우는 반대로 하면 값이 달라지므로 반대로도 해야 함 ex) 5-55, 55-5
+//통을 만들다가 number와 같은 값이 있으면 i값 리턴
+//i가 8을 넘어가면 -1 리턴
+//개어렵다
+
 import java.util.*;
- 
 class Solution {
     public int solution(int N, int number) {
-        if (N == number) {
+        int answer = 0;
+        
+        //값을 담을 list 만들기
+        ArrayList<Set<Integer>> list = new ArrayList<>();
+        
+        //i의 갯수만큼 set 만들기
+        //i를 0부터 시작한 이유는 인덱스는 0부터 시작하기 때문(i=1이라 하면 안됨)
+        for(int i=0; i<9; i++) {
+            list.add(new HashSet<>());
+        }
+        
+        //i가 1일 경우는 N하나만 들어감
+        list.get(1).add(N);
+        
+        //number이 N과 같다면 하나만 쓰인 것이므로 1을 반환
+        if(N == number) {
             return 1;
         }
- 
-        // 가능한 숫자들의 집합을 담을 리스트 초기화
-        List<Set<Integer>> dp = new ArrayList<>();
-        for (int i = 0; i <= 8; i++) {
-            dp.add(new HashSet<>());
-        }
- 
-        // 숫자 N을 이용하여 만들 수 있는 숫자들 초기화
-        dp.get(1).add(N);
- 
-        // 숫자를 더하거나 빼는 연산을 적용하여 가능한 숫자들 생성
-        for (int i = 2; i <= 8; i++) {
-            // 현재 i에 해당하는 숫자를 만들기 위해 N을 사용하는 경우의 수를 고려합니다.
- 
-            // N을 i번 사용하여 숫자를 만듭니다.
-            // StringBuilder를 사용하여 N을 i번 반복하여 숫자를 생성합니다.
+        
+        for(int i=2; i<9; i++) {
+            
+            //5,55,555와 같은 숫자 넣기
             StringBuilder sb = new StringBuilder();
-            for (int j = 1; j <= i; j++) {
+            for(int j=1; j<=i; j++) {
                 sb.append(N);
             }
-            dp.get(i).add(Integer.parseInt(sb.toString()));
- 
-            // 숫자를 더하거나 빼는 연산을 적용하여 가능한 숫자들을 생성합니다.
-            // dp 리스트를 이용하여 가능한 숫자들을 구합니다.
-            // dp[j]와 dp[i-j]에 저장된 숫자들을 이용하여 i에 해당하는 숫자를 만듭니다.
-            // 연산 결과를 dp[i]에 추가합니다.
-            for (int j = 1; j < i; j++) {
-                int k = i - j;
-                for (int num1 : dp.get(j)) {
-                    for (int num2 : dp.get(k)) {
-                        dp.get(i).add(num1 + num2);
-                        dp.get(i).add(num1 - num2);
-                        dp.get(i).add(num1 * num2);
-                        if (num2 != 0) {
-                            dp.get(i).add(num1 / num2);
+            list.get(i).add(Integer.parseInt(sb.toString()));
+            
+            //사칙연산 계산해서 통에 넣기
+            for(int j=1; j<i; j++) {
+                int k = i-j;
+                for(int num1:list.get(j)) {
+                    for(int num2:list.get(k)) {
+                        list.get(i).add(num1+num2);
+                        list.get(i).add(num1-num2);
+                        list.get(i).add(num1*num2);
+                        
+                        //0으로 나누면 오류뜨기 때문에
+                        if(num2 != 0) {
+                            list.get(i).add(num1 / num2);
                         }
                     }
                 }
             }
- 
-            // number가 가능한 숫자들 중에 포함되는지 확인합니다.
-            // 만약 number가 포함되어 있다면 i를 반환합니다.
-            if (dp.get(i).contains(number)) {
+            //지금 통에 number가 있다면 i의 값이 N의 최솟값임
+            if(list.get(i).contains(number)) {
                 return i;
             }
         }
- 
-        // number를 표현할 수 없는 경우
+        
+        //아니면 -1 리턴
         return -1;
     }
 }

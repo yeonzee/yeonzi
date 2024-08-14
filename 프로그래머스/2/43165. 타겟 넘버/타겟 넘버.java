@@ -1,35 +1,27 @@
+//복습의 복습을 걸쳐,,,,
 import java.util.*;
 class Solution {
+    static int answer = 0;
     public int solution(int[] numbers, int target) {
-        int answer = 0;
-        
-        return dfs(0,target,numbers,0);
-        
+
+        dfs(numbers, target, 0, 0);
+        return answer;
     }
     
-    public int dfs(int depth, int target, int[] numbers, int sum) {
+    public void dfs(int[] numbers, int target, int sum, int depth) {
         
-        int count = 0;
-            
-        //한 줄기 탐색 끝
+        //종료조건
         if(depth == numbers.length) {
-            //탐색 후 더한 값이 target과 같다면
             if(sum == target) {
-                return 1;
+                answer++;
             }
-            else {
-                return 0;
-            }
+            return; 
         }
-
-        //값을 더하는 경우
-        count += dfs(depth+1, target, numbers, sum+numbers[depth]);
-
-        //값을 빼는 경우
-        count += dfs(depth+1, target, numbers, sum-numbers[depth]);
-
-        return count;
-
         
+        //더하기
+        dfs(numbers, target, sum+numbers[depth], depth+1);
+        
+        //빼기
+        dfs(numbers, target, sum-numbers[depth], depth+1);
     }
 }

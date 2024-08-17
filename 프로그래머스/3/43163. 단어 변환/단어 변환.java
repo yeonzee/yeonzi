@@ -1,44 +1,46 @@
+//최소단계여서 bfs로 구하려다가 실패
 //dfs 풀이
 import java.util.*;
 class Solution {
-    static int answer;
     static boolean[] visited;
+    static int answer = 0;
     public int solution(String begin, String target, String[] words) {
-        answer = 0;
         visited = new boolean[words.length];
-        dfs(0,begin,target,words);
+        
+        dfs(begin, target, words, 0);
+        
         return answer;
     }
     
-    public void dfs(int cnt, String begin, String target, String[] words) {
-        
-        
+    public void dfs(String begin, String target, String[] words, int count) {
         //종료조건
         if(begin.equals(target)) {
-            answer = cnt;
+            answer = count;
             return;
         }
         
         for(int i=0; i<words.length; i++) {
-            //이미 방문한 곳이라면 안간다
+            //방문한 경우 무시
             if(visited[i]) {
                 continue;
             }
-        
-            int k=0;
-            //한글자만 다를 경우
-            for(int j=0;j<begin.length();j++) {
+            
+            //다른 글자 수 세기
+            int k = 0;
+            for(int j=0; j<words[i].length(); j++) {
                 if(begin.charAt(j) != words[i].charAt(j)) {
                     k++;
                 }
             }
             
-            //k가 1인 경우(바꾸는 경우)
+            //한글자만 다른 경우 단어 바꾸기
             if(k==1) {
                 visited[i] = true;
-                dfs(cnt+1,words[i],target,words);
+                dfs(words[i], target, words, count+1);
+                //백트래킹
                 visited[i] = false;
             }
         }
+        
     }
 }

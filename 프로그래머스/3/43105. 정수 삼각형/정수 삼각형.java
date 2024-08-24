@@ -1,32 +1,32 @@
-//삼각형을 왼쪽으로 민다
-
+//삼각형 왼쪽으로 밀기
+//합에 대한 배열 만들기
 import java.util.*;
 class Solution {
     public int solution(int[][] triangle) {
         int answer = 0;
         
-        //triangle의 길이만큼 빈 배열 생성해서 누적값 저장
-        int[][] sum = new int[triangle.length][triangle.length];
+        int[][] arr = new int[triangle.length][triangle.length];
         
-        //누적값의 처음 값은 triangle의 처음 값 대입
-        sum[0][0] = triangle[0][0];
+        arr[0][0] = triangle[0][0];
         
         for(int i=1; i<triangle.length; i++) {
-            for(int j=0; j<=i; j++) {
-                //j가 0보다 클 때는 내 위에 있는 누적 값 중 큰 값을 골라서 더해야 함
-                if(i>0 && j>0) {
-                    sum[i][j] = Math.max(sum[i-1][j-1],sum[i-1][j]) + triangle[i][j];
+            for(int j=0; j<triangle[i].length; j++) {
+                //첫번째 값은 위에 값만 더해야 함
+                if(j==0) {
+                    arr[i][j] = arr[i-1][j] + triangle[i][j];
                 }
-                //j가 0일 경우엔 무조건 내 위에 있는 누적값에서 더해야 함
-                else {
-                    sum[i][j] = sum[i-1][j] + triangle[i][j];
+                //마지막 값은 윗 대각선의 값만 더해야 함
+                else if(j==triangle[i].length-1) {
+                    arr[i][j] = arr[i-1][j-1] + triangle[i][j];
                 }
-            }
+                else { //두개 다 아니라면 위에 있는 값 중 큰 값을 더해야 함
+                    arr[i][j] = Math.max(arr[i-1][j], arr[i-1][j-1]) + triangle[i][j];
+                }   
+            } 
         }
         
-        //sum의 마지막 줄에서 최댓값 뽑기
-        for(int i=0; i<triangle.length; i++) {
-            answer = Math.max(answer, sum[triangle.length-1][i]);
+        for(int k=0; k<triangle.length; k++) {
+            answer = Math.max(answer, arr[triangle.length-1][k]);
         }
         return answer;
     }

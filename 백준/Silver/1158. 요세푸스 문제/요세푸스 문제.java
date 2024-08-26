@@ -5,6 +5,8 @@ public class Main {
 
         int N = sc.nextInt();
         int K = sc.nextInt();
+
+        //큐
         Queue<Integer> q = new LinkedList<>();
 
         for(int i=0; i<N; i++) {
@@ -14,21 +16,19 @@ public class Main {
         StringBuilder sb = new StringBuilder();
         sb.append("<");
 
-        int index = 0;
-        
-        while(q.size() > 1) {
+        while(q.size() > 1) {  //1인 이유: 마지막에 콤마가 들어가면 안돼서
             for(int i=0; i<K-1; i++) {
                 int a = q.poll();
-                q.offer(a);
+                q.add(a);
             }
-
             sb.append(q.poll());
             sb.append(", ");
         }
+
+        //q에는 마지막 값만이 남아있다
         sb.append(q.poll());
         sb.append(">");
-        System.out.print(sb);
 
-
+        System.out.print(sb.toString());
 	}
 }

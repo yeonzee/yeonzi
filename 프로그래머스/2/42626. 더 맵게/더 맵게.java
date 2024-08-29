@@ -1,30 +1,34 @@
+//우선순위 큐 사용
 import java.util.*;
 class Solution {
     public int solution(int[] scoville, int K) {
         int answer = 0;
-        PriorityQueue<Integer> heap = new PriorityQueue<>();
-        for(int num:scoville) {
-            heap.add(num);
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+        
+        for(int i=0; i<scoville.length; i++) {
+            q.offer(scoville[i]);
         }
-       
-        int count = 0;
+        
         while(true) {
-            if(heap.peek()<K) {
-                int current_1 = heap.poll();
-                int current_2 = heap.poll();
-                int a = current_1 + (current_2 *2);
-                heap.add(a);
-                count++;
+            if(q.size() == 1 && q.peek() < K) {  //스코빌 지수를 만들 수 없는 경우
+                return -1;
+            }
+        
+            if(q.peek() < K) {  //시작부터 모든 수가 K보다 큰 경우때문에 if절 사용
+                int a = q.poll();
+                int b = q.poll();
+
+                int scv = a+(b*2);
+
+                q.add(scv);
+
+                answer++;
             }
             else {
                 break;
             }
-            
-            if(heap.size()==1 && heap.peek() < K) {
-                return -1;
-            }
         }
         
-        return count;
+        return answer;
     }
 }

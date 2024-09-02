@@ -1,17 +1,16 @@
 import java.util.*;
-
 class Solution {
     public String solution(String s) {
-        String[] numbers = s.split(" ");
-        int min = Integer.MAX_VALUE;
-        int max = Integer.MIN_VALUE;
-
-        for (String numStr : numbers) {
-            int num = Integer.parseInt(numStr);
-            min = Math.min(min, num);
-            max = Math.max(max, num);
+        String answer = "";
+        String[] str = s.split(" ");
+        int[] num = new int[str.length];
+        
+        for(int i=0; i<str.length; i++) {
+            num[i] = Integer.parseInt(str[i]);
         }
-
-        return min + " " + max;
+        
+        Arrays.sort(num);
+        answer = String.valueOf(num[0]) + " " + String.valueOf(num[num.length-1]);
+        return answer;
     }
 }

@@ -3,19 +3,22 @@ class Solution {
     public int solution(int n) {
         int answer = 0;
         
-        for (int j=1;j<=n;j++) {
-            int aa = 0;
-            for (int i=j;i<=n;i++) {
-                aa += i;
-                if (aa == n) {
+        for(int i=1; i<=n; i++) {
+            int sum = 0;
+            for(int j=i; j<=n; j++) {
+                sum += j;
+
+                if(sum == n) {
                     answer++;
                     break;
                 }
-                else if (aa>n) {
+                
+                if(sum > n) {
                     break;
                 }
             }
         }
+        
         return answer;
     }
 }

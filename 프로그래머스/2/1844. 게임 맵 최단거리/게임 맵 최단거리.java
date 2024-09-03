@@ -1,49 +1,46 @@
+//최단거리 = bfs
 import java.util.*;
 class Solution {
-    //동서남북
-    static int[] move_x = {-1,1,0,0};
-    static int[] move_y = {0,0,-1,1};
+    static int[] dx = {0,0,-1,1};
+    static int[] dy = {-1,1,0,0};
+    static int answer = 0;
     static int[][] visited;
     public int solution(int[][] maps) {
-        int answer = 0;
+        
         visited = new int[maps.length][maps[0].length];
         
-        bfs(visited, maps);
+        bfs(maps);
         
-        answer = visited[maps.length-1][maps[0].length-1];
-        
-        //상대 팀 진영에 도착하지 못하는 경우
-        if(answer == 0) {
+        if(visited[maps.length-1][maps[0].length-1] == 0) {
             return -1;
         }
         
-        return answer;
+        return visited[maps.length-1][maps[0].length-1];
     }
     
-    public void bfs(int[][] visited, int[][] maps) {
+    public void bfs(int[][] maps) {
         Queue<int[]> q = new LinkedList<>();
-        //시작점 넣기
         q.offer(new int[]{0,0});
-        
-        //시작
         visited[0][0] = 1;
         
         while(!q.isEmpty()) {
             int[] temp = q.poll();
+            int now_x = temp[0];
+            int now_y = temp[1];
             
             for(int i=0; i<4; i++) {
-                int now_x = temp[0] + move_x[i];
-                int now_y = temp[1] + move_y[i];
+                int next_x = now_x+dx[i];
+                int next_y = now_y+dy[i];
                 
-                //조건을 벗어났을 때 무시
-                if(now_x<0 || now_x>maps.length-1 || now_y<0 || now_y>maps[0].length-1) {
+                //범위를 벗어나면 무시
+                if(next_x < 0 || next_x >= maps.length || next_y < 0 || next_y >= maps[0].length) {
                     continue;
                 }
                 
-                //방문 안했고 1이라면
-                if(visited[now_x][now_y]==0 && maps[now_x][now_y]==1) {
-                    visited[now_x][now_y] = visited[temp[0]][temp[1]]+1;
-                    q.add(new int[]{now_x, now_y});
+                //방문하지 않았고 갈 수 있는 길이라면
+                if(visited[next_x][next_y] == 0 && maps[next_x][next_y] == 1) {
+                    visited[next_x][next_y] = visited[now_x][now_y]+1;  
+                    q.add(new int[]{next_x, next_y});
                 }
             }
         }

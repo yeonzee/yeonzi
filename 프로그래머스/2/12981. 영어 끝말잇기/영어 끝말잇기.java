@@ -1,29 +1,30 @@
 import java.util.*;
-
 class Solution {
     public int[] solution(int n, String[] words) {
         int[] answer = new int[2];
-        ArrayList<String> list = new ArrayList<>();
         
-        for (int i = 0; i < words.length; i++) {
-            // 중복 단어 체크
-            if (list.contains(words[i])) {
-                answer[0] = (i % n) + 1;
-                answer[1] = (i / n) + 1;
-                return answer;
+        //통과된 단어를 넣을 리스트
+        ArrayList<String> arr = new ArrayList<>();
+        arr.add(words[0]);  //첫번째 단어 넣어주기
+        
+        for(int i=1; i<words.length; i++) {
+            //arr에 없고 앞에 단어와 연결된다면 arr에 단어 추가
+            if(!arr.contains(words[i]) && words[i-1].charAt(words[i-1].length()-1) == words[i].charAt(0)) {
+                arr.add(words[i]);
             }
-            // 끝말잇기 규칙 체크
-            if (i > 0 && words[i].charAt(0) != words[i-1].charAt(words[i-1].length() - 1)) {
-                answer[0] = (i % n) + 1;
-                answer[1] = (i / n) + 1;
-                return answer;
+            else {  //실패
+                if((i+1) % n == 0) {
+                    answer[0] = n;
+                    answer[1] = (i+1) / n;
+                }
+                else {
+                    answer[0] = (i+1) % n;
+                    answer[1] = ((i+1) / n) + 1;
+                }
+                break;
             }
-            
-            list.add(words[i]);
         }
-        
-        answer[0] = 0;
-        answer[1] = 0;
+
         return answer;
     }
 }

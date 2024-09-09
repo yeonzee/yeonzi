@@ -1,31 +1,34 @@
-//복습_하지만 푸는 방법을 몰라 답을 봤음
-//투포인터 풀이 방식
+//어떠한 방법을 써도 풀리지 않음
+//투포인터 방법
 import java.util.*;
 class Solution {
     public int solution(int[] people, int limit) {
         int answer = 0;
-        
-        //정렬
         Arrays.sort(people);
         
-        //처음부터(제일 작은 숫자)
-        int i=0;
-        //마지막부터(제일 큰 숫자)
+        int i = 0;
         int j = people.length-1;
         
-        while(i<=j) {
-            //제일 적은 몸무게와 제일 큰 몸무게를 더했을 때 한계치를 초과한다면 제일 큰 몸무게만 빼준다
-            if(people[i]+people[j]>limit) {
-                j--;
+        int count = 0;
+        
+        while(true) {
+            if(i > j) {
+                break;
             }
-            //더했을 때 한계치보다 작다면
-            else {
-                //제일 적은 몸무게와 제일 큰 몸무게 삭제
+            
+            int sum = 0;
+            sum = people[i] + people[j];
+            
+            if(sum > limit) {  //구명보트 제한을 넘는다면 뒤에 한 사람만 처리
+                j--;
+                count++;
+            }
+            else {  //구명보트에 2명 채워서 처리
                 i++;
                 j--;
+                count++;
             }
-            answer++;
         }
-        return answer;
+        return count;
     }
 }

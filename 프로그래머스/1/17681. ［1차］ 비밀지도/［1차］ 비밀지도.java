@@ -2,25 +2,27 @@ import java.util.*;
 class Solution {
     public String[] solution(int n, int[] arr1, int[] arr2) {
         String[] answer = new String[n];
-        for (int i=0;i<n;i++) {
-            //5글자씩 나와야 하기 때문에 format으로 형식 지정
-            //replace를 통해 공백은 0으로 설정
-            //2진수 변환 -> Integer.toBinaryString
-            String a1 = String.format("%" + n + "s",Integer.toBinaryString(arr1[i])).replace(" ","0");
-            String a2 = String.format("%" + n + "s",Integer.toBinaryString(arr2[i])).replace(" ","0");
+        
+        //2진수로 변환
+        for(int i=0; i<arr1.length; i++) {
+            String a1 = String.format("%"+n+"s", Integer.toBinaryString(arr1[i])).replace(" ","0");
+            String a2 = String.format("%"+n+"s", Integer.toBinaryString(arr2[i])).replace(" ","0");
             
+            StringBuilder sb = new StringBuilder();
             
-            String s = "";
-            for (int j=0;j<n;j++) {
-                if (a1.charAt(j)=='1' || a2.charAt(j)=='1') {
-                    s += "#";
+            for(int j=0; j<n; j++) {
+                //둘 다 0일 경우 공백
+                if(a1.charAt(j) == '0' && a2.charAt(j) == '0') {
+                    sb.append(" ");
                 }
                 else {
-                    s += " ";
+                    sb.append("#");
                 }
             }
-            answer[i] = s;
+            answer[i] = sb.toString();
         }
+        
+        
         return answer;
     }
 }

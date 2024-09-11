@@ -1,23 +1,20 @@
+//나가는 시점에 카메라 설치
 import java.util.*;
 class Solution {
     public int solution(int[][] routes) {
         int answer = 0;
         
-        //나가는 지점을 기준으로 오름차순
+        //나가는 시점으로 오름차순 정렬
         Arrays.sort(routes, (o1,o2) -> o1[1]-o2[1]);
-        // for(int[] a:routes) {
-        //     System.out.println(Arrays.toString(a));
-        // }
-        
-        //나가는 지점을 기준으로 카메라 설치
-        int max = routes[0][1];
-        answer++;
+
+        int max = routes[0][1];  //첫번째 나가는 시점
+        answer++;  //그 시점에 카메라 설치
         
         for(int i=1; i<routes.length; i++) {
-            if(max>=routes[i][0] && max<=routes[i][1]) {  //이미 카메라가 있다는 것
+            if(max <= routes[i][1] && max >= routes[i][0]) {  //구간 사이에 있다면 무시
                 continue;
             }
-            else {
+            else {  //구간 사이에 없다면 카메라 갱신
                 max = routes[i][1];
                 answer++;
             }

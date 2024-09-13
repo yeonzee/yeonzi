@@ -1,10 +1,10 @@
 # [level 2] [1차] 캐시 - 17680 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/17680) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/17680#qna) 
 
 ### 성능 요약
 
-메모리: 81.6 MB, 시간: 2.05 ms
+메모리: 112 MB, 시간: 49.34 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 06월 17일 13:58:04
+2024년 09월 13일 16:57:00
 
 ### 문제 설명
 

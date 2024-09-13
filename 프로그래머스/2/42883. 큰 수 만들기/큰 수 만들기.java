@@ -1,15 +1,24 @@
+import java.util.*;
 class Solution {
     public String solution(String number, int k) {
-        StringBuilder builder = new StringBuilder(number);
-        int length = builder.length() - k;
-
-        for (int i = 1; i < builder.length() && builder.length() > length; i++) {
-            if (builder.charAt(i) > builder.charAt(i - 1)) {
-                builder.deleteCharAt(i - 1);
-                i = Math.max(0, i - 2);
+        String answer = "";
+        
+        int start = 0;
+        for(int i=0; i<number.length()-k; i++) {
+            char max = '0';
+            for(int j=start; j<i+k+1; j++) {
+                if(number.charAt(j) > max) {
+                    max = number.charAt(j);
+                    start = j+1;
+                }
+                
+                //시간 효율성을 위해 가장 큰 수인 9면 스탑
+                if(number.charAt(j) == '9') {
+                    break;
+                }
             }
+            answer += Character.toString(max);
         }
-
-        return builder.substring(0, length);
+        return answer;
     }
 }

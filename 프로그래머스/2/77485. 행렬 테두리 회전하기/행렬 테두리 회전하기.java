@@ -1,67 +1,65 @@
+//돌린 상태 유지해야 함
 import java.util.*;
 class Solution {
-    static int[][] map;
     public int[] solution(int rows, int columns, int[][] queries) {
         int[] answer = new int[queries.length];
-        //2차원 배열 만들기
-        map = new int[rows+1][columns+1];
-        int num=1;
-        for(int i=1;i<=rows;i++) {
-            for(int j=1;j<=columns;j++) {
+        int[][] map = new int[rows+1][columns+1];
+        
+        int num = 1;
+        //map 만들기
+        for(int i=1; i<=rows; i++) {
+            for(int j=1; j<=columns; j++) {
                 map[i][j] = num;
                 num++;
             }
         }
         
-        int idx=0;
-        for(int[] query:queries) {
-            answer[idx] = rotate(query);
-            idx++;
+        for(int i=0; i<queries.length; i++) {
+            
+            int x_1 = queries[i][0];
+            int y_1 = queries[i][1];
+            int x_2 = queries[i][2];
+            int y_2 = queries[i][3];
+            
+            //시작하는 부분 저장해놓기
+            int prev = map[x_1][y_1];
+            int min = Integer.MAX_VALUE;
+            
+            //오른쪽으로 회전
+            for(int j=y_1+1; j<=y_2; j++) {
+                int temp = map[x_1][j];
+                map[x_1][j] = prev;
+                min = Math.min(min, prev);
+                prev = temp;
+            }
+            
+            //아래로 회전
+            for(int j=x_1+1; j<=x_2; j++) {
+                int temp = map[j][y_2];
+                map[j][y_2] = prev;
+                min = Math.min(min, prev);
+                prev = temp;
+            }
+            
+            //왼쪽으로 회전
+            for(int j=y_2-1; j>=y_1; j--) {
+                int temp = map[x_2][j];
+                map[x_2][j] = prev;
+                min = Math.min(min, prev);
+                prev = temp;
+            }
+            
+            //위로 회전
+            for(int j=x_2-1; j>=x_1; j--) {
+                int temp = map[j][y_1];
+                map[j][y_1] = prev;
+                min = Math.min(min, prev);
+                prev = temp;
+            }
+            
+            answer[i] = min;
         }
+        
         return answer;
-    }
-    
-    public int rotate(int[] query) {
-        int sx = query[0];
-        int sy = query[1];
-        int ex = query[2];
-        int ey = query[3];
-        
-        //블록 합개는 겹치므로 미리 저장해놓기
-        int prev = map[sx][sy];
-        int min = prev;
-        
-        //오른쪽
-        for(int i=sy+1;i<=ey;i++) {
-            int temp = map[sx][i];
-            map[sx][i] = prev;
-            min = Math.min(prev, min);
-            prev = temp;
-        }
-        
-        //아래
-        for(int i=sx+1;i<=ex;i++) {
-            int temp = map[i][ey];
-            map[i][ey] = prev;
-            min = Math.min(prev, min);
-            prev = temp;
-        }
-        
-        //왼쪽
-        for(int i=ey-1;i>=sy;i--) {
-            int temp = map[ex][i];
-            map[ex][i] = prev;
-            min = Math.min(prev, min);
-            prev = temp;
-        }
-        
-        //위
-        for(int i=ex-1;i>=sx;i--) {
-            int temp = map[i][sy];
-            map[i][sy] = prev;
-            min = Math.min(prev, min);
-            prev = temp;
-        }
-        return min;
     }
 }

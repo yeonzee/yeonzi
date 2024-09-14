@@ -1,10 +1,10 @@
 # [level 2] 튜플 - 64065 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/64065) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/64065#qna) 
 
 ### 성능 요약
 
-메모리: 84.6 MB, 시간: 0.66 ms
+메모리: 120 MB, 시간: 155.38 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 06월 17일 17:35:04
+2024년 09월 14일 10:35:14
 
 ### 문제 설명
 

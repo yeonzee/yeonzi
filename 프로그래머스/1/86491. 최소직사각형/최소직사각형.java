@@ -2,28 +2,19 @@ import java.util.*;
 class Solution {
     public int solution(int[][] sizes) {
         int answer = 0;
-        Integer[] max = new Integer[sizes.length];
-        Integer[] min = new Integer[sizes.length];
         
+        //가로에는 짧은 길이, 세로에는 큰 길이로 정렬
         
-        for (int i=0;i<sizes.length;i++) {
-            int w = Math.max(sizes[i][0],sizes[i][1]);
-            max[i] = w;
+        int max_w = 0;
+        int max_h = 0;
+        
+        for(int i=0; i<sizes.length; i++) {
+            int w = Math.min(sizes[i][0], sizes[i][1]);
+            int h = Math.max(sizes[i][0], sizes[i][1]);
             
-            int h = Math.min(sizes[i][0],sizes[i][1]);
-            min[i] = h;
+            max_w = Math.max(w,max_w);
+            max_h = Math.max(h,max_h);
         }
-        
-        int num1 = max[0];
-        int num2 = min[0];
-        for (int j=1;j<sizes.length;j++) {
-            if (num1 < max[j]) {
-                num1 = max[j];
-            }
-            if (num2 < min[j]) {
-                num2 = min[j];
-            }
-        }
-        return num1 * num2;
+        return max_w*max_h;
     }
 }

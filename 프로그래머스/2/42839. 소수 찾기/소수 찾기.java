@@ -1,18 +1,39 @@
 import java.util.*;
 class Solution {
+    //중복제거
     static HashSet<Integer> set = new HashSet<>();
     public int solution(String numbers) {
-        
         int answer = 0;
         
-        //중복없이 모든 조합 set에 저장
         recursive("", numbers);
         
+        
+        boolean[] check = new boolean[set.size()];
+        //소수인지 확인
+        int idx = 0;
         for(int num:set) {
-            if(isboolean(num)) {  //소수라면
+            if(num==0 || num==1) {
+                check[idx] = false;
+            }
+            else {
+                boolean isprime = true;
+                for(int j=2; j<=Math.sqrt(num); j++) {
+                    if(num % j == 0) {  //소수가 아님
+                        isprime = false;
+                        break;
+                    }
+                }
+                check[idx] = isprime;
+            }
+            idx++;
+        }
+        
+        for(int i=0; i<check.length; i++) {
+            if(check[i]) {
                 answer++;
             }
         }
+        
         return answer;
     }
     
@@ -22,22 +43,7 @@ class Solution {
         }
         
         for(int i=0; i<others.length(); i++) {
-            //재귀
             recursive(s+others.charAt(i), others.substring(0,i)+others.substring(i+1));
         }
-    }
-    
-    public boolean isboolean(int num) {
-        if(num==0 || num==1) {
-            return false;
-        }
-        else{
-            for(int i=2; i<=Math.sqrt(num); i++) {
-                if(num % i == 0) { //소수아님
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }

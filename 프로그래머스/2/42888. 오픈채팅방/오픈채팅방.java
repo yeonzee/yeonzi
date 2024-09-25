@@ -1,40 +1,50 @@
-//for문 하나를 돌려 map에 저장해두었다가 for문으로 다시 꺼내 list에 담기
+//enter leave change일 경우로 나누기
+//map 사용
 import java.util.*;
 class Solution {
     public String[] solution(String[] record) {
+        
+        //아이디와 각 닉네임을 담을 map
         HashMap<String, String> map = new HashMap<>();
+        
+        //결과를 넣을 리스트
         ArrayList<String> list = new ArrayList<>();
         
-        //후에 들어오는 enter와 change의 name 값이 들어감
-        for(String str:record) {
-            String[] part = str.split(" ");
+        //순서대로 넣기 때문에 뒤에서 새로 갱신 된 닉네임이 들감
+        for(int i=0; i<record.length; i++) {
+            String[] temp = record[i].split(" ");
             
-            String state = part[0];
-            String id = part[1];
-            //state가 leave일 경우 part[2]가 없기 때문에 오류 발생
+            String cmd = temp[0];
+            String id = temp[1];
             
-            if(state.equals("Enter") || state.equals("Change")) {
-                String name = part[2];
-                map.put(id, name);
+            //leave 에는 이름이 없으므로 제외
+            if(!cmd.equals("Leave")) {
+                map.put(id,temp[2]);
             }
         }
         
-        for(String str:record) {
-            String[] part = str.split(" ");
+        //명령어에 따라 입력
+        for(int i=0; i<record.length; i++) {
+            String[] temp = record[i].split(" ");
             
-            String state = part[0];
-            String id = part[1];
+            String cmd = temp[0];
+            String id = temp[1];
             
-            if(state.equals("Enter")) {
-                list.add(map.get(id) + "님이 들어왔습니다.");
+            if(cmd.equals("Enter")) {
+                list.add(map.get(id)+"님이 들어왔습니다.");
             }
-            else if(state.equals("Leave")) {
-                list.add(map.get(id) + "님이 나갔습니다.");
+            else if(cmd.equals("Leave")) {
+                list.add(map.get(id)+"님이 나갔습니다.");
             }
         }
         
         String[] answer = new String[list.size()];
         
-        return list.toArray(answer);
+        //리스트를 배열로 변환
+        for(int i=0; i<list.size(); i++) {
+            answer[i] = list.get(i);
+        }
+        
+        return answer;
     }
 }

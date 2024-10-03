@@ -1,19 +1,19 @@
-//조합..?
+//해시맵 사용
 import java.util.*;
 class Solution {
-    public int solution(String[][] clothes) {
+    public int solution(String[][] clotheas) {
         int answer = 1;
+        
         HashMap<String, Integer> map = new HashMap<>();
         
-        //map에 갯수 넣기
-        for(int i = 0; i < clothes.length; i++) {
-            map.put(clothes[i][1], map.getOrDefault(clothes[i][1], 0) + 1); 
+        for(int i=0; i<clotheas.length; i++) {
+            map.put(clotheas[i][1], map.getOrDefault(clotheas[i][1],0)+1);
         }
         
-        for (String str : map.keySet()) {
-            answer *= (map.get(str) + 1);
+        //조합
+        for(String str:map.keySet()) {
+            answer *= map.get(str)+1;
         }
-        System.out.print(map);
         return answer-1;
     }
 }

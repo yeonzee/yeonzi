@@ -1,18 +1,23 @@
+//칼로리가 낮은 음식 먼저 배치
 import java.util.*;
 class Solution {
     public String solution(int[] food) {
         String answer = "";
-        StringBuilder sb = new StringBuilder();
+        for(int i=1; i<food.length; i++) {
+            int num = food[i] / 2;
+            
+            for(int j=0; j<num; j++) {
+                answer += Integer.toString(i);
+            }
+        }
         
-        for (int i=1;i<food.length;i++) {
-            if (food[i] > 1) {
-                sb.append(String.valueOf(i).repeat(food[i] / 2));
-            }
-            else {
-                continue;
-            }
-        }  
-        answer = sb + "0";
-        return answer.toString() + sb.reverse().toString();
+        answer += "0";
+        
+        int length = answer.length();
+        
+        for(int i=length-2; i>=0; i--) {
+            answer += Character.toString(answer.charAt(i));
+        }
+        return answer;
     }
 }

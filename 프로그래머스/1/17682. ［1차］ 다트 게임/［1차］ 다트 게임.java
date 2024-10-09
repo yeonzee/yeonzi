@@ -1,48 +1,63 @@
+//s1, d2, t3
+//*->해당 점수 2배,직전 점수 2배, #->해당 점수 마이너스
+
 import java.util.*;
 class Solution {
     public int solution(String dartResult) {
         int answer = 0;
-        int[] result = new int[3];
-        int index = -1;
         
-        for(int i=0;i<dartResult.length();i++) {
-            char c = dartResult.charAt(i);
+        //순서대로 값을 저장할 배열
+        int[] result = new int[3];
+        int idx = 0;
+        int num = 0;
+        
+        for(int i=0; i<dartResult.length(); i++) {
+            char ch = dartResult.charAt(i);
             
-            if (Character.isDigit(c)) {
-                if (c == '1' && dartResult.charAt(i+1) == '0') {
-                    result[++index] = 10;
-                    i++; //0을 건너뛴다...!!!!
+            //숫자인지 확인
+            if(Character.isDigit(ch)) {
+                //10인 경우에는 2자리수이므로 따로 계산
+                if(ch=='1' && dartResult.charAt(i+1)=='0') {
+                    num = 10;
+                    i++;
                 }
                 else {
-                    result[++index] = c - '0';
+                    num = Character.getNumericValue(ch);
                 }
             }
-                
-            else if (c == 'S') {
-                result[index] = (int)Math.pow(result[index],1);
+            
+            //s,d,t 제곱해서 넣기
+            else if(ch=='S') {
+                result[idx] = (int)Math.pow(num,1);
+                idx++;
             }
-            else if (c == 'D') {
-                result[index] = (int)Math.pow(result[index],2);
+            else if(ch=='D') {
+                result[idx] = (int)Math.pow(num,2);
+                idx++;
             }
-            else if (c == 'T') {
-                result[index] = (int)Math.pow(result[index],3);
+            else if(ch=='T') {
+                result[idx] = (int)Math.pow(num,3);
+                idx++;
             }
-
-            else if (c == '*') {
-                if (index > 0) { //이전 턴 존재
-                    result[index-1] *= 2;
+            
+            //*,#일 경우 계산
+            else if(ch=='*') {
+                //*가 2개 이상일 경우
+                if(idx>1) {
+                    result[idx-2] *= 2;  //직전 *2
                 }
-                result[index] *= 2;
+                result[idx-1] *= 2;  //현재 *2
             }
-
-            else if (c == '#') {
-                result[index] *= -1;
-            }  
+            
+            else if(ch=='#') {
+                result[idx-1] *= -1;
+            }
         }
         
-        for (int num:result) {
-            answer += num;
+        for(int n:result) {
+            answer += n;
         }
+        
         return answer;
     }
 }

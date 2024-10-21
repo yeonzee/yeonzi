@@ -1,33 +1,32 @@
-//dp
-//0,1,2,3,4 일 경우 올림버튼
-//6,7,8,9 일 경우 내림버튼 (10에서 빼기)
-//5일 경우 그 앞의 숫자가 5보다 작으면 올림버튼
-//그 앞의 숫자가 5이상일 경우 내림버튼
+//뒷자리부터 보기
+//0,1,2,3,4면 올림버튼
+//6,7,8,9면 내림버튼 (10에서 빼기) -> 바로 앞 숫자 +1
+//5면 앞의 숫자 확인
+
+import java.util.*;
 class Solution {
     public int solution(int storey) {
         int answer = 0;
         
-        while(storey > 0) {
-            int digit = storey % 10;
+        while(storey != 0) {
+            int num = storey % 10;
             storey /= 10;
             
-            if(digit==5) {
-                if(storey%10 >= 5) {
-                    answer += (10-digit);
+            if(num < 5) {
+                answer += num;
+            }
+            else if(num > 5) {
+                answer += (10-num);
+                storey++;  //내림버튼을 눌러야 하기 때문에 +1
+            }
+            else {  //5일 경우
+                if(storey % 10 >= 5) {  //앞의 숫자가 5보다 크거나 같다면 내림버튼 누르는 게 효율적
+                    answer += (10-num);
                     storey++;
                 }
-                else {
-                    answer += digit;
+                else {  //그 앞의 숫자가 5보다 작으면 올림버튼 누르는 게 효율적
+                    answer += num;
                 }
-            }
-            
-            else if(digit > 5) {
-                answer += (10-digit);
-                storey++;
-            }
-            
-            else {
-                answer += digit;
             }
         }
         
@@ -35,7 +34,11 @@ class Solution {
     }
 }
 
-//storey++를 하는 이유: 281을 예시로 보자면 100 3번 -10 2번 1 1번 이 제일 적다
-//8은 5보다 크므로 answer에 2를 더한다
-//그 후에 값은 2가 되므로 storey++을 해줘야 한다 (난 100을 3번 썼으므로)
-//+1을 하면 안되는 이유는 모르겠음... 망할
+//예시 -> 2554
+/* 4일 경우 올림 버튼 +4, storey = 255
+5이므로 앞의 숫자 확인 -> 55
+60 -> 55는 5+4 = 9이다. 50 -> 55는 5+5=10이다 
+그러므로 앞의 숫자를 올려서 내림버튼 누르는 게 최소값
+storey=26됨 내림버튼 +4, 앞의 층 +1
+결론: 4+5+4+3 = 16
+복잡하다 참...*/

@@ -2,34 +2,34 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
         
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i=0; i<progresses.length;i++) {
-            int x=1;
-            while(true) {
-                if((speeds[i]*x) + progresses[i] >= 100) {
-                    break;
-                }
-                else {
-                    x++;
-                }
+        Queue<Integer> q = new LinkedList<>();
+        
+        for(int i=0; i<progresses.length; i++) {
+            //나누어 떨어지는 경우
+            if((100-progresses[i])%speeds[i] == 0) {
+                q.offer((100-progresses[i])/speeds[i]);
             }
-            queue.add(x);
+            else {
+                q.offer(((100-progresses[i])/speeds[i])+1);
+            }
         }
         
-        List<Integer> result = new ArrayList<>();
-        while (!queue.isEmpty()) {
-            int currentDay = queue.poll();
-            int count = 1;
-            while (!queue.isEmpty() && queue.peek() <= currentDay) {
-                queue.poll();
-                count++;
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        while(!q.isEmpty()) {
+            int temp = q.poll();
+            int num = 1;
+            //q가 비었는지 먼저 확인해야함 = 비교하기전에 큐가 비어있는지 먼저 확인해야 null오류 안남
+            while(!q.isEmpty() && temp >= q.peek()) {
+                num++;
+                q.poll();
             }
-            result.add(count);
+            list.add(num);
         }
         
-        int[] answer = new int[result.size()];
-        for (int i = 0; i < result.size(); i++) {
-            answer[i] = result.get(i);
+        int[] answer = new int[list.size()];
+        for(int i=0; i<list.size(); i++) {
+            answer[i] = list.get(i);
         }
         
         return answer;

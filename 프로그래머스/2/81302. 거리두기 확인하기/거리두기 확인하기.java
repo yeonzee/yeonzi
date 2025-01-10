@@ -1,62 +1,59 @@
-//1. p 주위에 p
-//2. p옆에 o라면 o의 위치를 중심으로 주위에 p가 있는 지 확인
+//bfs
 import java.util.*;
 class Solution {
     static int[] dx = {-1,1,0,0};
     static int[] dy = {0,0,-1,1};
-    
     public int[] solution(String[][] places) {
         int[] answer = new int[5];
-        int idx = 0;
         
         for(int i=0; i<places.length; i++) {
-            String[] place = places[i];
-            boolean check = false;
-            for(int j=0;j<5;j++) {
-                for(int k=0;k<5;k++) {
-                    if(place[j].charAt(k) == 'P') {
-                        if(bfs(place, j,k)) {
-                            //true면 거리두기 지키지 않음
-                            check = true;
+            String[] a = places[i];
+            boolean check = true;
+            for(int j=0; j<5; j++) {
+                for(int k=0; k<5; k++) {
+                    if(a[j].charAt(k) == 'P') {
+                        if(!bfs(a, j, k)) {
+                            //거리두기를 지키지 않은 경우
+                            check = false;
                         }
                     }
                 }
             }
-            answer[i] = check? 0:1;
+            answer[i] = check? 1:0;
         }
         return answer;
     }
-    
-    public boolean bfs(String[] p, int x, int y) {
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{x,y});
+    public boolean bfs(String[] a, int x, int y) {
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{x,y});
         
-        while(!queue.isEmpty()) {
-            int[] temp = queue.poll();
-            for(int i=0; i<4 ; i++) {
-                int nx = temp[0] + dx[i];
-                int ny = temp[1] + dy[i];
+        while(!q.isEmpty()) {
+            int[] temp = q.poll();
+            
+            for(int i=0; i<4; i++) {
+                int nx = temp[0]+dx[i];
+                int ny = temp[1]+dy[i];
                 
-                //탐색 범위 벗어나면 + 최초 출발점을 탐색에서 제외!!
+                //탐색 범위 벗어남 + 나 자신 무시
                 if(nx<0 || ny<0 || nx>=5 || ny>=5 || (nx==x && ny==y)) {
                     continue;
                 }
                 
-                //맨해튼거리
-                int m = Math.abs(x-nx) + Math.abs(y-ny);
+                //맨해튼 거리
+                int m = Math.abs(nx-x) + Math.abs(ny-y);
                 
-                //p가 맨해튼거리에 있다면
-                if(p[nx].charAt(ny) == 'P') {
-                    return true;
+                //이동한 곳이 P이고 맨해튼 거리가 2보다 작거나 같으면 거리두기 실패
+                if(a[nx].charAt(ny) == 'P' && m<=2) {
+                    return false;
                 }
-                
-                //p 옆에 o가 있다면
-                //o를 p로 옮기더라도 맨해튼 거리 안에 있어야 함
-                else if(p[nx].charAt(ny) == 'O' && m<2) {
-                    queue.add(new int[]{nx,ny});
+                //이동한 곳이 빈자리이고 맨해튼 거리가 2보다 작으면 그 곳을 기준으로 P가 있는지 재탐색
+                if(a[nx].charAt(ny) == 'O' && m<2) {
+                    q.add(new int[]{nx,ny});
                 }
             }
         }
-        return false;
+        
+        //거리두기 지킴
+        return true;
     }
 }

@@ -1,67 +1,66 @@
 /*
-입차 map을 통해 IN이라면 차량 번호, 입차 시간을 정의하고
-OUT이면 출차시간 - 입차시간하여 total의 벨류로 초기화하고, 해당 map의 키벨류를 비운다.
-만약 출차가 안찍혀 있다면 입차 map은 비워져있지 않을 것이고 23:59분을 시간 계산하여 위와 같이 계산해준다.
+차량의 입차 정보를 저장할 map, 출차시 이용한 시간을 저장할 map
+이용 시간 map에서 차량번호로 오름차순
+요금계산 -> 올림해야함!
 */
 import java.util.*;
-
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        int[] answer;
-        Map<String, Integer> inMap = new HashMap<>();
-        Map<String, Integer> totalTimeMap = new HashMap<>();
         
-        int baseTime = fees[0];
-        int baseFee = fees[1];
-        int partTime = fees[2];
-        int partFee = fees[3];
+        //차량 입/출차 정보 저장할 map
+        HashMap<String, Integer> map = new HashMap<>();
         
-        for (String record : records) {
-            String[] tmp = record.split(" ");
-            int time = getRealTime(tmp[0]);
-            String car = tmp[1];
-            String io = tmp[2];
+        //차량들이 입/출차한 시간 및 요금 기록할 map
+        HashMap<String, Integer> result = new HashMap<>();
+    
+        for(String str:records) {
+            String[] temp = str.split(" ");
+            String t = temp[0];
+            String number = temp[1];
+            String state = temp[2];
             
-            if (io.equals("IN")) {
-                inMap.put(car, time);
-            } else {
-                int inTime = inMap.get(car);
-                inMap.remove(car);
-                int parkedTime = time - inTime;
-                totalTimeMap.put(car, totalTimeMap.getOrDefault(car, 0) + parkedTime);
+            String[] time_cal = t.split(":");
+            int time = Integer.parseInt(time_cal[0])*60 + Integer.parseInt(time_cal[1]);
+            
+            //입차인 경우
+            if(state.equals("IN")) {
+                map.put(number, time);
+            }
+            //출차인 경우
+            else {
+                int total_t = time - map.get(number);
+                result.put(number, result.getOrDefault(number, 0) + total_t);
+                
+                //출차했으므로 map에서 지워주기
+                map.remove(number);
             }
         }
-
-        // 입차만 하고 출차하지 않은 차량 처리
-        int lastTime = 1439;
-        for (String car : inMap.keySet()) {
-            int inTime = inMap.get(car);
-            int parkedTime = lastTime - inTime;
-            totalTimeMap.put(car, totalTimeMap.getOrDefault(car, 0) + parkedTime);
+        
+        //입차만 하고 출차x
+        //23:59을 출차시간으로 계산 -> 1439
+        for(String s:map.keySet()) {
+            result.put(s, result.getOrDefault(s,0) + (1439-map.get(s)));
         }
+        
+        // 차량 번호 정렬을 위한 리스트 생성
+        List<String> carList = new ArrayList<>(result.keySet());
+        Collections.sort(carList); // 차량 번호 기준 오름차순 정렬
 
-        // 차량 번호를 정렬하여 처리
-        Object[] sortKey = totalTimeMap.keySet().toArray();
-        Arrays.sort(sortKey);
-        answer = new int[sortKey.length];
-
-        for (int i = 0; i < answer.length; i++) {
-            String car = (String) sortKey[i];
-            int totalTime = totalTimeMap.get(car);
-            int result = baseFee;
-            if (totalTime > baseTime) {
-                result += Math.ceil((double)(totalTime - baseTime) / partTime) * partFee;
+        int[] answer = new int[carList.size()];
+        
+        int index=0;
+        //요금 계산
+        for(String car:carList) {
+            //기본요금
+            if(result.get(car) <= fees[0]) {
+                answer[index] = fees[1];
             }
-            answer[i] = result;
+            else {
+                answer[index] = fees[1] + (int) Math.ceil((double) (result.get(car) - fees[0]) / fees[2]) * fees[3];
+            }
+            index++;
         }
         
         return answer;
-    }
-    
-    public int getRealTime(String time) {
-        String[] tmp = time.split(":");
-        int hour = Integer.parseInt(tmp[0]) * 60;
-        int minute = Integer.parseInt(tmp[1]);
-        return hour + minute;
     }
 }

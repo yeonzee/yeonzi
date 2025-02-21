@@ -1,21 +1,20 @@
+import java.util.*;
 class Solution {
     public boolean solution(int x) {
-        boolean answer = true;
+        boolean answer = false;
         
-        String str = String.valueOf(x);
-        int a = 0;
-        int sum = 0;
+        int temp=x;
+        int sum=0;
         
-        for (char c : str.toCharArray()) {
-            a = Character.getNumericValue(c);
-            sum += a;
+        while(temp>0) {
+            sum += temp%10;
+            temp /= 10;
         }
         
-        if (x % sum == 0) {
+        if(x%sum==0) {
             return true;
         }
-        else {
-            return false;
-        }
+        
+        return answer;
     }
 }

@@ -1,24 +1,27 @@
 import java.util.*;
 class Solution {
     public int[] solution(int[] arr, int divisor) {
+
+        //리스트
+        List<Integer> list = new ArrayList<>();
         
-        ArrayList<Integer> a = new ArrayList<>();
-        
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] % divisor == 0) {
-                a.add(arr[i]);
+        for(int i=0; i<arr.length; i++) {
+            if(arr[i]%divisor == 0) {
+                list.add(arr[i]);
             }
         }
         
-        if (a.isEmpty()) {
+        //정렬
+        Collections.sort(list);
+        
+        if(list.isEmpty()) {
             return new int[]{-1};
         }
         
-        Collections.sort(a);
-        
-        int[] answer = new int[a.size()];
-        for (int i = 0; i < a.size(); i++) {
-            answer[i] = a.get(i);
+        int[] answer = new int[list.size()];
+        for(int j=0; j<list.size(); j++) {
+            answer[j] = list.get(j);
+
         }
         
         return answer;

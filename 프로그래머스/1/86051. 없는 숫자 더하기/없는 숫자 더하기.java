@@ -1,20 +1,21 @@
-// 0에서 9까지 다 더한거에서 numbers의 합을 빼줌
-
+//0~9까지의 합에서 numbers의 합 빼기
 import java.util.*;
 class Solution {
     public int solution(int[] numbers) {
-        int answer = -1;
-
+        int answer = 0;
+        
+        //0~9까지의 합
         int sum1 = 0;
+        for(int i=0; i<10; i++) {
+            sum1 += i;
+        }
+        
+        //numbers의 합
         int sum2 = 0;
-        
-        for (int j = 0;j<10;j++) {
-            sum1 += j;
+        for(int num:numbers) {
+            sum2 += num;
         }
         
-        for (int i : numbers) {
-            sum2 += i;
-        }
-        return sum1 - sum2;
+        return sum1-sum2;
     }
 }

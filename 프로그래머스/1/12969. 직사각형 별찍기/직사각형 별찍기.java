@@ -6,11 +6,13 @@ class Solution {
         int a = sc.nextInt();
         int b = sc.nextInt();
         
-        for (int i = 0; i < b; i++) { // 세로
-            for (int j = 0; j < a; j++) { // 가로
-                System.out.print("*"); 
-            }
-            System.out.println(); // 줄 바꿈
+        String str = "";
+        for(int i=0; i<a; i++) {
+            str += "*";
+        }
+        
+        for(int j=0; j<b; j++) {
+            System.out.println(str);
         }
     }
 }

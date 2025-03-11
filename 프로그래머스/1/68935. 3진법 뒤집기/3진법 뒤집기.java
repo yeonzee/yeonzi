@@ -2,17 +2,20 @@ import java.util.*;
 class Solution {
     public int solution(int n) {
         int answer = 0;
-        ArrayList<Integer> a = new ArrayList<>();
+    
+        ArrayList<Integer> list = new ArrayList<>();
         
-        while(n>0) {
-            a.add(n % 3);
-            n /= 3;
+        while(n > 0) {
+            int num = n%3;
+            list.add(num);
+            n/=3;
         }
         
-        for (int i = 0;i<a.size();i++) {
-            answer += a.get(a.size()-1-i) * Math.pow(3,i);
-            
+        int len = list.size();
+        for(int i=0; i<len; i++) {
+            answer += Math.pow(3,i)*list.get(len-i-1);
         }
+        
         return answer;
     }
 }

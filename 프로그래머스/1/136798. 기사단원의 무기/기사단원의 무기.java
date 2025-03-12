@@ -1,28 +1,36 @@
 import java.util.*;
-
 class Solution {
     public int solution(int number, int limit, int power) {
         int answer = 0;
         
-        //약수를 배수를 통해서 구하기
-        //number+1 -> 인덱스와 숫자를 일치시키기 위해
-        int[] a = new int[number + 1];    
-        for (int i = 1; i <= number; i++) {
-            for (int j = 1; j <= number / i; j++) {
-                a[i * j]++;
+        //약수의 갯수를 담을 배열
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=1; i<=number; i++) {
+            int count = 0;
+            for(int j=1; j*j<=i; j++) {
+                if(i % j == 0) {
+                    count += 2;
+                    
+                    //제곱수일경우 -1
+                    if(j*j == i) {
+                        count -= 1;
+                    }
+                }
+            }
+            
+            //제한 수치를 넘으면 power로 변경
+            if(count > limit) {
+                list.add(power);
+            }
+            else {
+                list.add(count);
             }
         }
         
-        // limit을 넘는 값을 power로 대체하고 합산
-        for (int k=0;k<a.length;k++) {
-            if (a[k] > limit) {
-                a[k] = power;
-            }
-        }
-        
-        for (int num : a) {
+        for(int num:list) {
             answer += num;
         }
+        
         return answer;
     }
 }

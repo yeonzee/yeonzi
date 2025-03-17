@@ -3,14 +3,12 @@ class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
         
         Queue<Integer> q = new LinkedList<>();
-        
         for(int i=0; i<progresses.length; i++) {
-            //나누어 떨어지는 경우
-            if((100-progresses[i])%speeds[i] == 0) {
-                q.offer((100-progresses[i])/speeds[i]);
+            if((100-progresses[i]) % speeds[i] == 0) {
+                q.add(((100-progresses[i]) / speeds[i]));
             }
             else {
-                q.offer(((100-progresses[i])/speeds[i])+1);
+                q.add(((100-progresses[i]) / speeds[i])+1);
             }
         }
         
@@ -18,20 +16,20 @@ class Solution {
         
         while(!q.isEmpty()) {
             int temp = q.poll();
-            int num = 1;
-            //q가 비었는지 먼저 확인해야함 = 비교하기전에 큐가 비어있는지 먼저 확인해야 null오류 안남
+            int cnt = 1;
             while(!q.isEmpty() && temp >= q.peek()) {
-                num++;
+                cnt++;
                 q.poll();
             }
-            list.add(num);
+            list.add(cnt);
         }
         
         int[] answer = new int[list.size()];
-        for(int i=0; i<list.size(); i++) {
-            answer[i] = list.get(i);
-        }
         
+        for(int j=0; j<list.size(); j++) {
+            answer[j] = list.get(j);
+        }
+       
         return answer;
     }
 }

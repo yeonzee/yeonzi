@@ -1,33 +1,32 @@
-//dfs
 import java.util.*;
 class Solution {
+    static boolean[] check;
     static int answer;
-    static boolean[] checked;
     public int solution(int k, int[][] dungeons) {
         answer = 0;
-        checked = new boolean[dungeons.length];
+        check = new boolean[dungeons.length]; 
         
-        dfs(0, dungeons, k);
-            
+        dfs(0, k, dungeons);
+        
         return answer;
     }
     
-    public void dfs(int depth, int[][] dungeons, int k) {
+    public void dfs(int depth, int k, int[][] dungeons) {
         
         for(int i=0; i<dungeons.length; i++) {
-            //조건을 충족한다면 탐험
-            if(k>=dungeons[i][0] && !checked[i]) {
-                //방문처리
-                checked[i] = true;
+            //탐험 가능
+            if(k>=dungeons[i][0] && !check[i]) {
+                check[i] = true;
                 k -= dungeons[i][1];
-                dfs(depth+1, dungeons, k);
+                dfs(depth+1, k, dungeons);
                 
                 //백트래킹
-                checked[i] = false;
+                check[i] = false;
                 k += dungeons[i][1];
             }
         }
         
         answer = Math.max(answer,depth);
     }
+    
 }

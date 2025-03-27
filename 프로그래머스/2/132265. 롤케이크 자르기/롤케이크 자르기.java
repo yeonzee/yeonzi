@@ -1,34 +1,37 @@
-//set으로 풀면 시간초과
-//map으로 풀어야 함
+//이중 for문을 활용한 set은 시간 초과
+//map 사용
 import java.util.*;
 class Solution {
     public int solution(int[] topping) {
         int answer = 0;
-
-        HashMap<Integer, Integer> map_1 = new HashMap<>();
-        HashMap<Integer, Integer> map_2 = new HashMap<>();  
         
-        for(int num_1:topping) {
-            //형한테 다 넣기
-            map_1.put(num_1, map_1.getOrDefault(num_1,0)+1);
+        //형 토핑 map
+        HashMap<Integer, Integer> map_1 = new HashMap<>();
+        
+        //동생 토핑 map
+        HashMap<Integer, Integer> map_2 = new HashMap<>();
+        
+        //동생한테 몰아주기
+        for(int n:topping) {
+            map_2.put(n,map_2.getOrDefault(n,0)+1);
         }
         
-        //형한테서 하나씩 빼면서 동생한테 넣은 후 갯수 세기
-        for(int num_2:topping) {
-            //형한테 1개가 남은 걸 동생한테 주면 형한테서 해당 토핑 제거
-            if(map_1.get(num_2) == 1) {
-                map_1.remove(num_2);
-            }
+        //형이 하나씩 뺏기
+        for(int n:topping) {
             
-            //1개보다 많다면 -1
+            //동생한테 1개 남은 걸 형한테 주면 동생한테서 토핑 제거
+            if(map_2.get(n)==1) {
+                map_2.remove(n);
+            }
             else {
-                map_1.put(num_2, map_1.get(num_2)-1);
+                //동생 토핑 뺏기
+                map_2.put(n,map_2.getOrDefault(n,0)-1);
             }
             
-            //동생한테 넣기
-            map_2.put(num_2, map_2.getOrDefault(num_2,0)+1);
+            //형한테 토핑 추가
+            map_1.put(n,map_1.getOrDefault(n,0)+1);
             
-            //갯수 비교
+            //형이랑 동생이랑 토핑 갯수가 같다면
             if(map_1.size() == map_2.size()) {
                 answer++;
             }

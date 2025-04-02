@@ -1,30 +1,29 @@
-//문제 이해는 했지만 해결방법이 떠오르지 않음 이런거 대체 어떻게 바로바로 떠오르냐....
+//두 수를 붙인 후 비교 -> 정렬
 import java.util.*;
 class Solution {
     public String solution(int[] numbers) {
         String answer = "";
         
-        //string배열로 만들기
         String[] arr = new String[numbers.length];
         
-        //arr에 넣기
-        for(int i=0; i<arr.length; i++) {
-            arr[i] = String.valueOf(numbers[i]);
+        //numbers를 string으로 변환
+        for(int i=0; i<numbers.length; i++) {
+            arr[i] = Integer.toString(numbers[i]);
         }
         
-        //숫자 두개를 붙였을 때 큰 수가 오도록 정렬
-        Arrays.sort(arr, (o1,o2) -> (o2+o1).compareTo(o1+o2));
+        //두 수를 붙이고 비교하였을 때, 큰 수를 앞으로 오도록 배치
+        Arrays.sort(arr, (o1,o2) -> ((o2+o1).compareTo(o1+o2)));
         
-        //모든 수가 0일 경우
+        //효율성을 높이기 위해 0일때 처리
+        //정렬 후 첫번째 수가 0일 때 (= 모든 수가 0일 때) 0으로 처리
         if(arr[0].equals("0")) {
             return "0";
         }
         
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<arr.length; i++) {
-            sb.append(arr[i]);
+        for(String s:arr) {
+            answer += s;
         }
         
-        return sb.toString();
+        return answer;
     }
 }

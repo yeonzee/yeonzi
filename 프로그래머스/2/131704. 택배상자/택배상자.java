@@ -2,30 +2,46 @@ import java.util.*;
 class Solution {
     public int solution(int[] order) {
         int answer = 0;
-        Stack<Integer> stack = new Stack<>();
-        //i는 나갈 순서, box는 들어온 순서
-        int i=0;
-        int box=1;
         
-        while(i<order.length) {
-            if(box == order[i]) {
-                answer++;
-                i++;
+        //보조 컨테이너 벨트
+        Stack<Integer> stack = new Stack<>();
+        
+        //트럭에 담겨야 할 박스
+        int i = 0;
+        //현재 박스
+        int box = 1;
+        while(box<=order.length) {
+            //트럭에 들어가야 하는 박스
+            int truck = order[i];
+            
+            //현재 들어온 박스가 트럭에 실을 수 있다면
+            if(box == truck) {
                 box++;
-            }
-            else if(!stack.isEmpty() && stack.peek() == order[i]) {
-                stack.pop();
-                answer++;
                 i++;
+                answer++;
             }
-            else if(box<=order.length) {
+            //보조 컨테이너에 있다면
+            else if(!stack.isEmpty() && stack.peek() == truck) {
+                while(!stack.isEmpty() && stack.peek() == truck) {
+                    stack.pop();
+                    i++;
+                    answer++;
+                }
+            }
+            //트럭에 실을 수 없다면 
+            else {
                 stack.push(box);
                 box++;
             }
-            else {
-                break;
-            }
         }
+        
+        //박스 다 넣은 뒤에도 보조 컨테이너에 실을 수 있는 게 있을 수 있음
+        while (!stack.isEmpty() && stack.peek() == order[i]) {
+            stack.pop();
+            i++;
+            answer++;
+        }
+        
         return answer;
     }
 }

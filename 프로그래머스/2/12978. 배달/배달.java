@@ -1,47 +1,57 @@
+//최단거리(한 정점에서만 최단거리를 구하므로) -> 다익스트라 알고리즘
 import java.util.*;
 class Solution {
     public int solution(int N, int[][] road, int K) {
         int answer = 0;
-        int[][] map =new int[N][N];
-        
-        //모든 map값의 INF값을 넣는다.(플로이드 와샬 쓰기위해) map[정점][정점]은 0으로초기화
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[0].length; j++) {
-                if (i == j){  
+
+        //거리에 최솟값을 넣기 위해 모든 거리를 최댓값으로 초기화해서 만들어준다
+        int[][] map = new int[N][N];
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                //나 자신은 0으로 초기화
+                if(i==j) {
                     map[i][j] = 0;
-                    continue;
                 }
-                map[i][j] = 500001;  
-            }
-        }
-        // 정점과 정점을 연결해주는 맵을 그린다. 
-        for(int[] data:road){
-            //새로운 다리가 기존에 있던 다리보다 크면 넘긴다. 작으면 갱신한다. 
-            if(map[data[0]-1][data[1]-1]<data[2]){
-                continue;
-            }
-            map[data[0]-1][data[1]-1]=data[2];
-            map[data[1]-1][data[0]-1]=data[2];
-        }
-        //플로이드 와샬 : 정점과 정점 사이의 최소거리를 구해주는 알고리즘
-        //중간 경유
-        for(int i=0; i<map.length; i++) {
-            //출발
-            for(int j=0; j<map.length; j++) {
-                //도착
-                for(int k=0; k<map.length; k++) {
-                    //i라는 중간지를 경유하는 것이 더 짧으면 갱신
-                    if(map[j][k] > map[j][i] + map[i][k])
-                        map[j][k] = map[j][i] + map[i][k];
+                else {
+                    map[i][j] = 500000;
+                    map[j][i] = 500000;
                 }
             }
-        }
-        // 1번 마을부터 출발하니, map[0]를 순환한다. 시간이 K이하면 answer++
-        for (int i = 0; i < map[0].length; i++) {
-            if (map[0][i] <= K) 
-                answer++;
         }
         
+        //road의 값 넣어준다
+        for(int[] r:road) {
+            //더 작은 수가 있으면 건너뛰기
+            if(map[r[0]-1][r[1]-1] < r[2]) {
+                continue;
+            }            
+            map[r[0]-1][r[1]-1] = r[2];
+            map[r[1]-1][r[0]-1] = r[2];
+        }
+        
+        //다익스트라 알고리즘
+        
+        //중간에 경유
+        for(int i=0; i<map.length; i++) {
+            //시작
+            for(int j=0; j<map.length; j++) {
+                //마지막
+                for(int k=0; k<map.length; k++) {
+                    //만약 중간에 경유하는 경우의 값이 더 작다면 갱신
+                    if(map[j][k] > map[j][i] + map[i][k]) {
+                        map[j][k] = map[j][i] + map[i][k];
+                    }
+                }
+            }
+        }
+        
+        //K보다 작은 값 추출
+        for(int i=0; i<map.length; i++) {
+            if(map[0][i] <= K) {
+                answer++;
+            }
+        }
+
         return answer;
     }
 }

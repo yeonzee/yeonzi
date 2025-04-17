@@ -2,37 +2,48 @@ import java.util.*;
 class Solution {
     public int solution(String[][] book_time) {
         int answer = 0;
-        int[][] arr = new int[book_time.length][2];
         
-        for(int i=0;i<book_time.length;i++) {
-            String[] start_time = book_time[i][0].split(":");
-            String[] end_time = book_time[i][1].split(":");
+        int[][] time = new int[book_time.length][2];
+        int idx = 0;
+        
+        //시간을 분 단위로 변환
+        for(String[] t:book_time) {
+            String[] temp1 = t[0].split(":");
+            String[] temp2 = t[1].split(":");
             
-            int start = Integer.parseInt(start_time[0])*60 + Integer.parseInt(start_time[1]);
-            int end = Integer.parseInt(end_time[0])*60 + Integer.parseInt(end_time[1]) + 10;
-            arr[i][0] = start;
-            arr[i][1] = end;
+            time[idx][0] = Integer.parseInt(temp1[0])*60 + Integer.parseInt(temp1[1]);
+            time[idx][1] = Integer.parseInt(temp2[0])*60 + Integer.parseInt(temp2[1]) + 10;
             
+            idx++;
         }
         
-        //시작시간을 기준으로 오름차순 정렬
-        Arrays.sort(arr, (o1, o2) -> (o1[0] == o2[0] ? o1[1] - o2[1] : o1[0] - o2[0]));
+        //입실 시간순으로 오름차순 정렬
+        Arrays.sort(time, (o1, o2) -> Integer.compare(o1[0],o2[0]));
         
-        ArrayList<Integer> endTime = new ArrayList<>();
-        for(int i=0;i<arr.length;i++) {
-            boolean allocated = false;
-            for(int j=0;j<endTime.size();j++) {
-                if(endTime.get(j) <= arr[i][0]) {
-                    endTime.set(j,arr[i][1]);
-                    allocated = true;
+        ArrayList<Integer> room = new ArrayList<>();
+        
+        for(int[] t:time) {
+            //확인
+            boolean check = false;
+            
+            for(int i=0; i<room.size(); i++) {
+                //입실시간이 퇴실시간보다 크거나 같은 경우 해당 방 대실 가능
+                if(room.get(i) <= t[0]) {
+                    //i번 방에 퇴실 시간을 현재 예약의 퇴실 시간으로 수정
+                    room.set(i, t[1]);
+                    check = true;
                     break;
                 }
             }
-            if(!allocated) {
-                endTime.add(arr[i][1]);
-                answer++;
+            
+            //새로운 방이 필요한 경우
+            if(!check) {
+                room.add(t[1]);
             }
         }
-        return answer;
+
+        return room.size();
     }
+        
+      
 }

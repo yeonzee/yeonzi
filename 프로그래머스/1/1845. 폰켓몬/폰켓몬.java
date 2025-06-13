@@ -3,18 +3,22 @@ class Solution {
     public int solution(int[] nums) {
         int answer = 0;
         
-        //중복제거
+        //뽑은거
+        int choice = nums.length/2;
+
+        //중복 제거
         HashSet<Integer> set = new HashSet<>();
         
-        for(int i=0; i<nums.length; i++) {
-            set.add(nums[i]);
+        for(int n:nums) {
+            set.add(n);
         }
         
-        if(set.size() < (nums.length / 2)) {
-            return set.size();
+        if(set.size() >= choice) {
+            answer = choice;
         }
         else {
-            return nums.length / 2;
+            answer = set.size();
         }
+        return answer;
     }
 }

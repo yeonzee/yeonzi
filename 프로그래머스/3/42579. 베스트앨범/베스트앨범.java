@@ -1,37 +1,37 @@
 //장르별 2곡
-//많이 재생된 장르/장르 내에서 많이 재생된 노래/ 재생 횟수가 같다면 고유 번호가 낮은 순
+//장르 내림차순 / 장르 내에서 내림차순 2곡 / 재생 횟수가 같다면 고유 번호가 낮은 순
+//이중 해시 맵 사용하는 거 잊지 말기...!!!!
 import java.util.*;
 class Solution {
     public int[] solution(String[] genres, int[] plays) {
         
-        //장르별 총 횟수를 담을 map
+        //장르 맵
         HashMap<String, Integer> genre_map = new HashMap<>();
-        //장르별 인덱스별 횟수를 담을 map
+        //장르 별 재생횟수 인덱스를 담은 맵
         HashMap<String, HashMap<Integer, Integer>> idx_play = new HashMap<>();
         
         for(int i=0; i<genres.length; i++) {
             
-            //새로운 장르라면 새로운 맵을 만들어 인덱스 별 재생 횟수 저장
+            //새로운 장르라면 새로운 맵을 만들어 인덱스 별 저장 횟수 저장
             if(!genre_map.containsKey(genres[i])) {
                 HashMap<Integer, Integer> map = new HashMap<>();
-                map.put(i, plays[i]);
-                idx_play.put(genres[i], map);
+                map.put(i,plays[i]);
+                idx_play.put(genres[i],map);
             }
             
             //원래 있던 장르라면
             else {
-                idx_play.get(genres[i]).put(i, plays[i]);  //idx_play.get(genres[i]) = map
+                idx_play.get(genres[i]).put(i,plays[i]);
             }
             
-            //이 문장이 밑에 있는 이유: 맨 윗줄에 있으면 genre_map에 모든 장르가 다 들어가서 else문이 실행이 안됨
+            //밑으로 가는 이유: 맨 위에 있으면 무조건 장르가 있어서 새로운 map을 만들 수 없음
             genre_map.put(genres[i], genre_map.getOrDefault(genres[i],0)+plays[i]);
         }
         
         // System.out.println(genre_map);
         // System.out.println(idx_play);
         
-        //총 재생 횟수가 많은 장르 순으로 정렬 (내림차순)
-        //key값을 정렬할 리스트
+        //genre_map 내림차순 정렬
         ArrayList<String> list = new ArrayList<>(genre_map.keySet());
         Collections.sort(list, (o1,o2) -> genre_map.get(o2)-genre_map.get(o1));
         
@@ -41,11 +41,12 @@ class Solution {
         for(String str:list) {
             //인덱스, 재생횟수 map
             HashMap<Integer, Integer> map = idx_play.get(str);
+            
             //인덱스를 담을 리스트
             ArrayList<Integer> arr = new ArrayList<>(map.keySet());
             
             //재생횟수 내림차순 정렬
-            Collections.sort(arr, (o1,o2) -> map.get(o2)-map.get(o1));
+            Collections.sort(arr, (o1,o2) -> map.get(o2) - map.get(o1));
             
             //가장 큰 값 담기
             result.add(arr.get(0));

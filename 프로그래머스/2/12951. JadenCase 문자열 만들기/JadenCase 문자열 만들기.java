@@ -4,32 +4,24 @@ class Solution {
         String answer = "";
         
         //마지막 공백 보존
-        String[] temp = s.split(" ",-1);
+        String[] tmp = s.split(" ",-1);
         
-        for(String str:temp) {
+        for(String str:tmp) {
             
-            //공백일 경우 무시
-            if(str.length()==0) {
-                answer += " ";
-                continue;
+            //str이 공백이 아닌 경우 && 첫 문자가 알파벳인지 판별 
+            if(str.length()>0 && Character.isLetter(str.charAt(0))) {
+                str = str.substring(0,1).toUpperCase() + str.substring(1,str.length()).toLowerCase();
+                answer += str;
             }
-            
-            //첫문자가 숫자
-            if(Character.isDigit(str.charAt(0))) {
-                answer += str.toLowerCase();
-            }
-            
-            //첫문자만 대문자, 나머지는 소문자
             else {
-                str = str.substring(0,1).toUpperCase() + str.substring(1, str.length()).toLowerCase();
+                str = str.toLowerCase();
                 answer += str;
             }
             
             answer += " ";
-            
         }
-
+        
         //마지막 공백 제거
-        return answer.substring(0, answer.length() - 1);
+        return answer.substring(0,answer.length()-1);
     }
 }

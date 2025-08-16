@@ -4,21 +4,22 @@ class Solution {
         int answer = 0;
         
         for(int i=1; i<=n; i++) {
-            int sum = 0;
+            int num = 0;
             for(int j=i; j<=n; j++) {
-                sum += j;
-
-                if(sum == n) {
+                num += j;
+                
+                if(num==n) {
                     answer++;
                     break;
                 }
-                
-                if(sum > n) {
+                else if(num>n) {
                     break;
+                }
+                else {
+                    continue;
                 }
             }
         }
-        
         return answer;
     }
 }

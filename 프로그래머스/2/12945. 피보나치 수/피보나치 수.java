@@ -1,17 +1,18 @@
-//피보나치 수 -> 배열 활용
+//재귀로 풀면 시간초과 뜸
 import java.util.*;
 class Solution {
     public int solution(int n) {
-        int[] answer = new int[n+1];
-        answer[0] = 0;
-        answer[1] = 1;
+        int answer = 0;
         
-        for (int i=2;i<=n;i++) {
-            //피보나치 수는 int형과 long형보다 훨씬 크기 때문에 1234567로 나누어주지 않으면 오버플로우 발생 -> 오류엔딩
-            //모듈러 연산 사용
-            answer[i] = (answer[i-1] + answer[i-2])%1234567; 
+        int[] arr = new int[n+1];
+        
+        arr[0] = 0;
+        arr[1] = 1;
+        
+        for(int i=2; i<=n; i++) {
+            arr[i] = (arr[i-1] % 1234567) + (arr[i-2] % 1234567);
         }
         
-        return answer[n] % 1234567;
+        return arr[n] % 1234567;
     }
 }

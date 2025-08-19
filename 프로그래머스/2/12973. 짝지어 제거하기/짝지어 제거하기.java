@@ -1,12 +1,12 @@
-//StringBuilder와 delete는 효율성이 떨어진다 -> stack 사용
+//스택 사용
 import java.util.*;
 class Solution {
     public int solution(String s) {
         int answer = 0;
+        
         Stack<Character> stack = new Stack<>();
         
         for(int i=0; i<s.length(); i++) {
-            //스택이 비어있지 않고 조건을 만족한다면
             if(!stack.isEmpty() && stack.peek() == s.charAt(i)) {
                 stack.pop();
             }
@@ -15,10 +15,15 @@ class Solution {
             }
         }
         
+        //스택이 비어있으면 1
         if(stack.isEmpty()) {
-            return 1;
+            answer = 1;
+        }
+        else {
+            answer = 0;
         }
         
-        return 0;
+
+        return answer;
     }
 }

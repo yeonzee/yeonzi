@@ -1,43 +1,43 @@
+//map과 그 map을 복사하여 비교
 import java.util.*;
-
 class Solution {
     public int solution(String[] want, int[] number, String[] discount) {
         int answer = 0;
-        int total = 0;
-
-        // 구매해야 하는 전체 아이템 수 계산
-        for(int n : number) {
-            total += n;
+        
+        HashMap<String, Integer> map = new HashMap<>();
+        
+        for(int i=0; i<want.length; i++) {
+            map.put(want[i],number[i]);
         }
-
-        // 슬라이딩 윈도우 방식 적용
-        for (int i = 0; i <= discount.length - total; i++) {
-            // number 배열 복사 (초기화 용도)
-            int[] temp = Arrays.copyOf(number, number.length);
-
-            // 현재 윈도우의 아이템 체크
-            for (int j = i; j < i + total; j++) {
-                for (int k = 0; k < want.length; k++) {
-                    if (discount[j].equals(want[k])) {
-                        temp[k]--;  // 해당 품목 수량 감소
-                    }
+        
+        for(int i=0; i<=discount.length-10; i++) {
+            //map 복사
+            HashMap<String, Integer> now_map = new HashMap<>(map);
+            
+            for(int j=i; j<10+i; j++) {
+                //하나씩 빼기
+                if(now_map.containsKey(discount[j])) {
+                    now_map.put(discount[j], now_map.get(discount[j])-1);
                 }
             }
-
-            // 모든 수량이 0이 되었는지 확인
-            boolean allZero = true;
-            for (int n : temp) {
-                if (n != 0) {
-                    allZero = false;
+            
+            
+            //복사한 map에서 0보다 큰게 있다면 못산게 있다는 뜻 = 실패
+            boolean check = true;
+            for(int k=0; k<want.length; k++) {
+                if(now_map.get(want[k]) > 0) {
+                    check = false;
                     break;
+                    
+                } 
+            }
+            
+            if(check) {
+                    answer++;
                 }
-            }
-
-            if (allZero) {
-                answer++;
-            }
         }
-
+        
+        
         return answer;
     }
 }

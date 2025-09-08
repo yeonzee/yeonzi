@@ -1,24 +1,24 @@
 import java.util.*;
 class Solution {
-    static boolean[] check;
     static int answer;
+    static boolean[] check;
     public int solution(int k, int[][] dungeons) {
         answer = 0;
-        check = new boolean[dungeons.length]; 
+        check = new boolean[dungeons.length];
         
-        dfs(0, k, dungeons);
-        
+        dfs(dungeons, 0, k);
         return answer;
     }
     
-    public void dfs(int depth, int k, int[][] dungeons) {
+    public void dfs(int[][] dungeons, int depth, int k) {
         
         for(int i=0; i<dungeons.length; i++) {
-            //탐험 가능
-            if(k>=dungeons[i][0] && !check[i]) {
+            //탐색 가능 = 방문하지 않았고 남은 피로도 가능
+            if(!check[i] && dungeons[i][0] <= k) {
+                //방문처리
                 check[i] = true;
                 k -= dungeons[i][1];
-                dfs(depth+1, k, dungeons);
+                dfs(dungeons, depth+1, k);
                 
                 //백트래킹
                 check[i] = false;
@@ -26,7 +26,6 @@ class Solution {
             }
         }
         
-        answer = Math.max(answer,depth);
+        answer = Math.max(answer, depth);
     }
-    
 }

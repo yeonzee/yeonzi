@@ -1,57 +1,64 @@
+//알파벳만 가능 / 대소문자 비교x / 65536을 곱한 후에 소수점 아래 버리기
 import java.util.*;
 class Solution {
     public int solution(String str1, String str2) {
         int answer = 0;
         
-        // str1을 쪼갠 리스트
-        ArrayList<String> arr1 = new ArrayList<>();
-        for (int i = 0; i < str1.length() - 1; i++) {
-            String sub = str1.substring(i, i + 2).toLowerCase();
-            if (Character.isLetter(sub.charAt(0)) && Character.isLetter(sub.charAt(1))) {
-                arr1.add(sub);
-            }
-        }
-
-        // str2을 쪼갠 리스트
-        ArrayList<String> arr2 = new ArrayList<>();
-        for (int i = 0; i < str2.length() - 1; i++) {
-            String sub = str2.substring(i, i + 2).toLowerCase();
-            if (Character.isLetter(sub.charAt(0)) && Character.isLetter(sub.charAt(1))) {
-                arr2.add(sub);
+        ArrayList<String> list_1 = new ArrayList<>();
+        ArrayList<String> list_2 = new ArrayList<>();
+        
+        for(int i=0; i<str1.length()-1; i++) {
+            String s = str1.substring(i,i+2).toLowerCase();
+            //둘 다 알파벳인지 확인
+            if(Character.isLetter(s.charAt(0)) && Character.isLetter(s.charAt(1))) {
+                list_1.add(s);
             }
         }
         
-        Collections.sort(arr1);
-        Collections.sort(arr2);
+        for(int i=0; i<str2.length()-1; i++) {
+            String s = str2.substring(i,i+2).toLowerCase();
+            //둘 다 알파벳인지 확인
+            if(Character.isLetter(s.charAt(0)) && Character.isLetter(s.charAt(1))) {
+                list_2.add(s);
+            }
+        }
+  
+        //정렬
+        Collections.sort(list_1);
+        Collections.sort(list_2);
         
         //교집합
         ArrayList<String> is = new ArrayList<>();
+        
         //합집합
         ArrayList<String> un = new ArrayList<>();
         
-        boolean[] visited = new boolean[arr2.size()];
-
-        for(String s1:arr1) {
-            for(int i=0; i<arr2.size(); i++) {
-                //같다면 교집합
-                if(s1.equals(arr2.get(i)) && !visited[i]) {
+        //중복 제거를 위해 이미 비교했는지 확인
+        boolean[] check = new boolean[list_2.size()];
+        
+        for(String s1:list_1) {
+            for(int i=0; i<list_2.size(); i++) {
+                String s2 = list_2.get(i);
+                if(s1.equals(s2) && !check[i]) {
                     is.add(s1);
-                    visited[i] = true;
+                    //이미 중복이 확인되었음으로 처리
+                    check[i] = true;
                     break;
                 }
             }
             un.add(s1);
         }
         
-        //arr2에서 남은 문자열 넣기
-        for(int i=0; i<visited.length; i++) {
-            if(!visited[i]) {
-                un.add(arr2.get(i));
+        //list_2에서 남은 문자열 넣기
+        for(int i=0; i<list_2.size(); i++) {
+            if(!check[i]) {
+                un.add(list_2.get(i));
             }
         }
         
+        //0일 경우
         if(is.size() == 0 && un.size() == 0) {
-            return 1*65536;
+            return 65536;
         }
         
         //실수형으로 계산

@@ -1,5 +1,6 @@
-//이중 for문은 시간 초과
-//stack에 인덱스 넣기
+//100만이래서 이중 for문 사용하면 시간 초과
+//stack 사용
+//뭔말인지도 몰겠음
 import java.util.*;
 class Solution {
     public int[] solution(int[] numbers) {
@@ -8,6 +9,8 @@ class Solution {
         Stack<Integer> stack = new Stack<>();
         
         for(int i=0; i<numbers.length; i++) {
+            
+            //stack이 비어있지 않고
             while(!stack.isEmpty() && numbers[stack.peek()] < numbers[i]) {
                 answer[stack.pop()] = numbers[i];
             }
